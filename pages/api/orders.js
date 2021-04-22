@@ -1,6 +1,5 @@
 import crypto from "crypto";
 import { getEventsById, updateSeats } from "../../utils/fauna";
-import { store } from "react-notifications-component";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
