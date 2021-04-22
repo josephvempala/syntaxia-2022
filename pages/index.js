@@ -36,14 +36,12 @@ const Home = () => {
 
   const events = data ? Object.values(data[0].data) : "";
 
-  console.log(events);
   const options = [
     { label: "web eye", value: "webeye" },
     { label: "Coding", value: "coding" },
     { label: "Quiz", value: "quiz" },
   ];
 
-  console.log(selected);
   const displayRazorpay = async () => {
     const result = await loadRazorpay(
       "https://checkout.razorpay.com/v1/checkout.js"
