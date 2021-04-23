@@ -9,6 +9,8 @@ import ListGroup from "react-bootstrap/ListGroup";
 import axios from "axios";
 import useSWR from "swr";
 import MySpinner from "../components/MySpinner";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const loadRazorpay = (src) => {
   return new Promise((resolve) => {
@@ -48,7 +50,15 @@ const Home = () => {
     );
 
     if (!result) {
-      return "you are not online";
+      return toast.info("Could not load razorpay,are you online", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
 
     const data = await axios
@@ -57,7 +67,6 @@ const Home = () => {
       .catch(function (error) {
         console.log(error);
       });
-    console.log("index", data);
     const options = {
       key: process.env.RAZORPAY_KEY,
       amount: data.amount,
@@ -66,6 +75,17 @@ const Home = () => {
       description: "Test Transaction",
       order_id: data.id,
       image: "",
+      handler: function (response) {
+        return toast.success("Payment Successful", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      },
       prefill: {
         name: "rama",
         email: "",
@@ -79,20 +99,33 @@ const Home = () => {
       },
     };
     const paymentObject = new window.Razorpay(options);
-    // rzp1.on("payment.failed", function (response) {
-    //   alert(response.error.code);
-    //   alert(response.error.description);
-    //   alert(response.error.source);
-    //   alert(response.error.step);
-    //   alert(response.error.reason);
-    //   alert(response.error.metadata.order_id);
-    //   alert(response.error.metadata.payment_id);
-    // });
+    paymentObject.on("payment.failed", function (response) {
+      return toast.error(
+        `Payment Failed , with reason :${response.reason} for ${payment_id} `,
+        {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
+      // alert(response.error.code);
+      // alert(response.error.description);
+      // alert(response.error.source);
+      // alert(response.error.step);
+      // alert(response.error.reason);
+      // alert(response.error.metadata.order_id);
+      // alert(response.error.metadata.payment_id);
+    });
     paymentObject.open();
   };
 
   return (
     <div>
+      <ToastContainer />
       <h1>Select Events</h1>
       <Form.Control
         onChange={(e) => setDetails(e)}
