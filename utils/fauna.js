@@ -54,6 +54,7 @@ export const updateSeats = async (eventList, data) => {
         break;
     }
   });
+  console.log(data);
   return await faunaClient.query(
     q.Update(q.Ref(q.Collection("seats"), "296089134289650185"), {
       data: data,

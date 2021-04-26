@@ -2,8 +2,6 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
@@ -13,4 +11,61 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "icomoon";
+  src: url("./fonts/icomoon.ttf?ahis0f") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "icomoon" !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-envelope-o:before {
+  content: "\f003";
+}
+.icon-home:before {
+  content: "\f015";
+}
+.icon-font:before {
+  content: "\f031";
+}
+.icon-phone:before {
+  content: "\f095";
+}
+.icon-info:before {
+  content: "\f129";
+}
+.icon-newspaper-o:before {
+  content: "\f1ea";
+}
+.icon-address-card:before {
+  content: "\f2bb";
+}
+.icon-vcard:before {
+  content: "\f2bb";
+}
+.icon-instagram:before {
+  content: "\f16d";
+}
+
+.fa-lg {
+  vertical-align: -15%;
+  font-size: 1.33em;
 }
