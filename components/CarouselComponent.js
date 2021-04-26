@@ -8,27 +8,27 @@ import {
 
 const items = [
   {
-    src: "../assets/images/carousel1.jpg",
+    src: "./assets/images/carousel1.jpg",
     altText: "Slide 1",
     caption: "Slide 1",
   },
   {
-    src: process.env.PUBLIC_URL + "carousel2.jpg",
+    src: "./assets/images/carousel2.jpg",
     altText: "Slide 2",
     caption: "Slide 2",
   },
   {
-    src: process.env.PUBLIC_URL + "carousel3.jpg",
+    src: "./assets/images/carousel3.jpg",
     altText: "Slide 3",
     caption: "Slide 3",
   },
   {
-    src: process.env.PUBLIC_URL + "carousel4.jpg",
+    src: "./assets/images/carousel4.jpg",
     altText: "Slide 4",
     caption: "Slide 4",
   },
   {
-    src: process.env.PUBLIC_URL + "carousel5.jpg",
+    src: "./assets/images/carousel5.jpg",
     altText: "Slide 5",
     caption: "Slide 5",
   },

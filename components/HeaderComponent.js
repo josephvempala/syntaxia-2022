@@ -28,30 +28,30 @@ const HeaderComponent = () => {
         <Collapse isOpen={isNavOpen} navbar>
           <Nav navbar className="ml-auto">
             <NavItem>
-              <Link className="nav-link" href="/">
-                <span className="icon-home fa-lg">Home</span>
+              <Link href="/">
+              <a className="nav-link"><span className="fa fa-home fa-lg">Home</span></a>
               </Link>
             </NavItem>
             <NavItem>
-              <Link className="nav-link" href="/about">
-                <span className="icon-info fa-lg">About</span>
+              <Link href="/about">
+                <a className="nav-link"><span className="fa fa-info fa-lg">About</span></a>
               </Link>
             </NavItem>
             <NavItem>
-              <Link className="nav-link" href="/contact">
-                <span className="icon-address-card fa-lg">Contact</span>
+              <Link  href="/contact">
+                <a className="nav-link"><span className="fa fa-address-card fa-lg">Contact</span></a>
               </Link>
             </NavItem>
             <NavItem>
               <Download className="nav-link">
-                <span className="icon-newspaper-o fa-lg">Brochure</span>
+                <span className="fa fa-newspaper-o fa-lg">Brochure</span>
               </Download>
             </NavItem>
             <NavItem>
-              <Link className="nav-link" href="/register">
-                <span className="icon-address-card fa-lg">
+              <Link href="/register">
+              <a className="nav-link"><span className="fa fa-address-card fa-lg">
                   Events/Registration
-                </span>
+                </span></a>
               </Link>
             </NavItem>
           </Nav>
@@ -62,7 +62,7 @@ const HeaderComponent = () => {
           <div className="col-sm-4 align-self-center">
             <img
               className="center-img"
-              src={"/assets/images/cybernetics-logo.png"}
+              src={"./assets/images/cybernetics-logo.png"}
               alt="Cybernetics Logo"
             />
           </div>
@@ -78,7 +78,7 @@ const HeaderComponent = () => {
           <div className="col-sm-4 align-self-center">
             <img
               className="center-img"
-              src={process.env.PUBLIC_URL + "images/syntaxia-logo.png"}
+              src={"./assets/images/syntaxia-logo.png"}
               alt="Syntaxia Logo"
             />
           </div>
