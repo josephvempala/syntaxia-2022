@@ -19,9 +19,9 @@ export default function Contact() {
             <br />
             Karnataka 560027
             <br />
-            <i className="icon-phone fa-lg"></i>: +910000000000
+            <i className="fa fa-phone fa-lg"></i>: +910000000000
             <br />
-            <i className="icon-envelope-o fa-lg"></i>:
+            <i className="fa fa-envelope-o fa-lg"></i>:
             <a href="mailto:cybernetics.sjc@gmail.com">
               cybernetics.sjc@gmail.com
             </a>
@@ -34,14 +34,14 @@ export default function Contact() {
               className="btn btn-primary"
               href="tel:+910000000000"
             >
-              <i className="icon-phone"></i> Call
+              <i className="fa fa-phone"></i> Call
             </a>
             <a
               role="button"
               className="btn btn-success"
               href="mailto:cybernetics.sjc@gmail.com"
             >
-              <i className="icon-envelope-o"></i> Email
+              <i className="fa fa-envelope-o"></i> Email
             </a>
           </div>
         </div>

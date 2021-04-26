@@ -1,71 +1,78 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
+.row-header{
+  margin:0px auto;
+  padding:0px;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.row-content {
+  margin:0px auto;
+  padding: 0px;
+  width: 100%;
 }
 
-* {
-  box-sizing: border-box;
+.footer{
+  background-color: #fdb927;
+  margin:0px auto;
+  padding: 20px 0px 20px 0px;
 }
 
+.jumbotron {
+  padding:70px 30px 70px 30px;
+  margin:0px auto;
+  background: #000000 ;
+  color:floralwhite;
+}
+.bg-purple{
+  background: #552583;
+}
+
+address{
+  font-size:80%;
+  margin:0px;
+  color:#0f0f0f;
+}
+
+.center-text{
+  text-align: center;
+}
+
+.center-img{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  height: 100%;
+}
+.carousel-item img {
+  display: block;
+  width:100%;
+  max-height: 700px;
+}
+.carousel-item .img-fluid {
+  width:100%;
+} 
+.carousel-item a {
+  display: block;
+  width:100%;
+}
+h1{
+  font-size: 350%;
+}
+h2{
+  font-size: 250%;
+}
 @font-face {
-  font-family: "icomoon";
-  src: url("./fonts/icomoon.ttf?ahis0f") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-  font-display: block;
+  font-family: 'Sequel';
+  src: local('Sequel'),url(./fonts/Sequel.ttf) format('truetype');
+  font-display: swap;
 }
-
-[class^="icon-"],
-[class*=" icon-"] {
-  /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: "icomoon" !important;
-  speak: never;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: 'forma';
+  src: local('forma'),url(./fonts/forma.ttf) format('truetype');
+  font-display: swap;
 }
-
-.icon-envelope-o:before {
-  content: "\f003";
+.sequel{
+  font-family: Sequel;
 }
-.icon-home:before {
-  content: "\f015";
-}
-.icon-font:before {
-  content: "\f031";
-}
-.icon-phone:before {
-  content: "\f095";
-}
-.icon-info:before {
-  content: "\f129";
-}
-.icon-newspaper-o:before {
-  content: "\f1ea";
-}
-.icon-address-card:before {
-  content: "\f2bb";
-}
-.icon-vcard:before {
-  content: "\f2bb";
-}
-.icon-instagram:before {
-  content: "\f16d";
-}
-
-.fa-lg {
-  vertical-align: -15%;
-  font-size: 1.33em;
+.forma{
+  font-family: forma;
 }
