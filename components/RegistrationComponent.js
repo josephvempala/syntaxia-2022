@@ -5,12 +5,11 @@ import React, { useState } from "react";
 import MultiSelect from "react-multi-select-component";
 import {
   Button,
-  Input,
-  InputGroup,
   ListGroupItem,
   ListGroup,
-  Form,
-  FormGroup,
+  Container,
+  Row,
+  Col,
 } from "reactstrap";
 import axios from "axios";
 import useSWR from "swr";
@@ -18,7 +17,7 @@ import MySpinner from "../components/MySpinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { Container, Row, Col } from "reactstrap";
+
 const fetcher = () => {
   const res = axios
     .get("/api/events")
@@ -48,9 +47,9 @@ const loadRazorpay = (src) => {
 
 const RegisterComponent = ({ res }) => {
   const [selected, setSelected] = useState([]);
-  const [name, setName] = useState("");
-  const [collegeName, setCollegeName] = useState("");
-
+  const [name, setName] = useState("dheera");
+  const [collegeName, setCollegeName] = useState("joseph's college");
+  const [disabled, setDisabled] = useState(false);
   const { data } = useSWR("/api/events", fetcher, {
     initialData: res,
     refreshInterval: 1000,
@@ -64,8 +63,9 @@ const RegisterComponent = ({ res }) => {
   ];
 
   const displayRazorpay = async (values) => {
-    // console.log(values);
+    console.log(values);
     console.log(name, collegeName);
+
     if (!name || !collegeName) {
       return toast.error("Name and college name are required", {
         position: "top-right",
@@ -77,9 +77,14 @@ const RegisterComponent = ({ res }) => {
         progress: undefined,
       });
     }
+
+    if (disabled) {
+      return;
+    }
     const result = await loadRazorpay(
       "https://checkout.razorpay.com/v1/checkout.js"
     );
+    setDisabled(true);
 
     if (!result) {
       return toast.info("Could not load razorpay,are you online", {
@@ -154,6 +159,7 @@ const RegisterComponent = ({ res }) => {
       // alert(response.error.metadata.payment_id);
     });
     paymentObject.open();
+    setDisabled(false);
   };
 
   return (
@@ -161,14 +167,13 @@ const RegisterComponent = ({ res }) => {
       <ToastContainer />
       <Row className=" w-60 h-30 mx-auto mt-4">
         <Col sm={{ size: 6, order: 2, offset: 1 }}>
-          <AvForm>
+          <AvForm onSubmit={(values) => displayRazorpay(values)}>
             <h2 className="text-center">Select Events</h2>
             <AvField
               name="name"
               label="Enter your Name"
               type="text"
               errorMessage="Enter a valid name"
-              onChange={(value) => setName(value)}
               validate={{
                 required: { value: true },
                 pattern: { value: "^[A-Za-z0-9]" },
@@ -179,7 +184,6 @@ const RegisterComponent = ({ res }) => {
               name="nameCustomMessage"
               label="Enter your college name"
               type="text"
-              onChange={(value) => setCollegeName(value)}
               validate={{
                 required: {
                   value: true,
@@ -208,7 +212,7 @@ const RegisterComponent = ({ res }) => {
               <Button
                 className="mr-4 mb-2"
                 color="primary"
-                // disabled={isLoading}
+                disabled={disabled}
                 onClick={() => displayRazorpay()}
               >
                 Pay Now
