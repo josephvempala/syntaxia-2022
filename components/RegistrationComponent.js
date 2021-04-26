@@ -9,13 +9,16 @@ import {
   InputGroup,
   ListGroupItem,
   ListGroup,
+  Form,
+  FormGroup,
 } from "reactstrap";
 import axios from "axios";
 import useSWR from "swr";
 import MySpinner from "../components/MySpinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { AvForm, AvField } from "availity-reactstrap-validation";
+import { Container, Row, Col } from "reactstrap";
 const fetcher = () => {
   const res = axios
     .get("/api/events")
@@ -47,10 +50,6 @@ const RegisterComponent = ({ res }) => {
   const [selected, setSelected] = useState([]);
   const [name, setName] = useState("");
   const [collegeName, setCollegeName] = useState("");
-  const setDetails = (e) => {
-    let fieldVal = e.target.value;
-    setName(fieldVal);
-  };
 
   const { data } = useSWR("/api/events", fetcher, {
     initialData: res,
@@ -64,7 +63,20 @@ const RegisterComponent = ({ res }) => {
     { label: "Quiz", value: "quiz" },
   ];
 
-  const displayRazorpay = async () => {
+  const displayRazorpay = async (values) => {
+    // console.log(values);
+    console.log(name, collegeName);
+    if (!name || !collegeName) {
+      return toast.error("Name and college name are required", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
     const result = await loadRazorpay(
       "https://checkout.razorpay.com/v1/checkout.js"
     );
@@ -145,49 +157,92 @@ const RegisterComponent = ({ res }) => {
   };
 
   return (
-    <div>
+    <Container>
       <ToastContainer />
-      <h1>Select Events</h1>
-      <InputGroup size="sm">
-        <label htmlFor="">Enter your name</label>
-        <Input onChange={(e) => setDetails(e)} />
-        <label className="ml-4" htmlFor="">
-          Enter your college name
-        </label>
-        <Input onChange={(e) => setCollegeName(e)} />
-      </InputGroup>
-      <pre>{JSON.stringify(selected.label)}</pre>
-      <MultiSelect
-        options={options}
-        value={selected}
-        onChange={setSelected}
-        labelledBy="Select"
-      />
-      {selected.length > 0 && (
-        <Button
-          className="mt-5"
-          color="primary"
-          // disabled={isLoading}
-          onClick={() => displayRazorpay()}
-        >
-          Pay Now
-        </Button>
-      )}
+      <Row className=" w-60 h-30 mx-auto mt-4">
+        <Col sm={{ size: 6, order: 2, offset: 1 }}>
+          <AvForm>
+            <h2 className="text-center">Select Events</h2>
+            <AvField
+              name="name"
+              label="Enter your Name"
+              type="text"
+              errorMessage="Enter a valid name"
+              onChange={(value) => setName(value)}
+              validate={{
+                required: { value: true },
+                pattern: { value: "^[A-Za-z0-9]" },
+                minLength: { value: 4 },
+              }}
+            />
+            <AvField
+              name="nameCustomMessage"
+              label="Enter your college name"
+              type="text"
+              onChange={(value) => setCollegeName(value)}
+              validate={{
+                required: {
+                  value: true,
+                  errorMessage: "Please enter your college name",
+                },
+                pattern: {
+                  value: "^[A-Za-z]",
+                  errorMessage: "Your name must be composed only with letter",
+                },
+                minLength: {
+                  value: 4,
+                  errorMessage: "Your name must have 4 or more characters",
+                },
+              }}
+            />
+            <pre>{JSON.stringify(selected.label)}</pre>
 
-      <ListGroup className="mt-5 ">
-        {events ? (
-          events &&
-          events.map((singleEvent) => (
-            <ListGroupItem key={singleEvent.id}>
-              {singleEvent.name} :{" "}
-              {singleEvent.seats === 0 ? "event closed" : singleEvent.seats}
-            </ListGroupItem>
-          ))
-        ) : (
-          <MySpinner />
-        )}
-      </ListGroup>
-    </div>
+            <MultiSelect
+              options={options}
+              value={selected}
+              onChange={setSelected}
+              labelledBy="Select"
+              className="mb-4"
+            />
+            {selected.length > 0 && (
+              <Button
+                className="mr-4 mb-2"
+                color="primary"
+                // disabled={isLoading}
+                onClick={() => displayRazorpay()}
+              >
+                Pay Now
+              </Button>
+            )}
+            <Button
+              color="danger"
+              className="ml-8 mb-2"
+              onClick={() => setSelected([])}
+            >
+              cancel
+            </Button>
+          </AvForm>
+        </Col>
+
+        <Col className="mb-4">
+          <h2 className="text-center">Events List</h2>
+
+          <ListGroup>
+            {events.length > 0 ? (
+              events &&
+              events.map((singleEvent) => (
+                <ListGroupItem key={singleEvent.id}>
+                  {singleEvent.name} :{" "}
+                  {singleEvent.seats === 0 ? "event closed" : singleEvent.seats}
+                </ListGroupItem>
+              ))
+            ) : (
+              <MySpinner />
+            )}
+          </ListGroup>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

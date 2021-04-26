@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "availity-reactstrap-validation": "^2.7.1",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "bootstrap-social": "^5.1.1",
