@@ -1,7 +1,4 @@
-import Head from "next/head";
-import Link from "next/link";
-
-import React, { useState } from "react";
+import { useState } from "react";
 import MultiSelect from "react-multi-select-component";
 import {
   Button,
@@ -47,8 +44,6 @@ const loadRazorpay = (src) => {
 
 const RegisterComponent = ({ res }) => {
   const [selected, setSelected] = useState([]);
-  const [name, setName] = useState("dheera");
-  const [collegeName, setCollegeName] = useState("joseph's college");
   const [disabled, setDisabled] = useState(false);
   const { data } = useSWR("/api/events", fetcher, {
     initialData: res,
@@ -56,28 +51,14 @@ const RegisterComponent = ({ res }) => {
   });
 
   const events = data ? Object.values(data[0].data) : [];
+
   const options = [
     { label: "web eye", value: "webeye" },
     { label: "Coding", value: "coding" },
     { label: "Quiz", value: "quiz" },
   ];
 
-  const displayRazorpay = async (values) => {
-    console.log(values);
-    console.log(name, collegeName);
-
-    if (!name || !collegeName) {
-      return toast.error("Name and college name are required", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-
+  const displayRazorpay = async (event, values) => {
     if (disabled) {
       return;
     }
@@ -124,13 +105,13 @@ const RegisterComponent = ({ res }) => {
         });
       },
       prefill: {
-        name,
+        name: values.name,
         email: "",
         contact: "",
       },
       notes: {
         eventNames: `${selected.map((select) => select.value)}`,
-        college: collegeName,
+        college: values.collegeName,
       },
       theme: {
         color: "#3399cc",
@@ -139,7 +120,7 @@ const RegisterComponent = ({ res }) => {
     const paymentObject = new window.Razorpay(options);
     paymentObject.on("payment.failed", function (response) {
       return toast.error(
-        `Payment Failed , with reason :${response.reason} for ${payment_id} `,
+        `Payment Failed,due to:${response.reason} for ${payment_id} `,
         {
           position: "top-center",
           autoClose: 5000,
@@ -161,13 +142,27 @@ const RegisterComponent = ({ res }) => {
     paymentObject.open();
     setDisabled(false);
   };
+  const handleInvalidSubmit = () => {
+    return toast.error("All fields are required", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
 
   return (
     <Container>
       <ToastContainer />
       <Row className=" w-60 h-30 mx-auto mt-4">
         <Col sm={{ size: 6, order: 2, offset: 1 }}>
-          <AvForm onSubmit={(values) => displayRazorpay(values)}>
+          <AvForm
+            onValidSubmit={displayRazorpay}
+            onInvalidSubmit={handleInvalidSubmit}
+          >
             <h2 className="text-center">Select Events</h2>
             <AvField
               name="name"
@@ -181,7 +176,7 @@ const RegisterComponent = ({ res }) => {
               }}
             />
             <AvField
-              name="nameCustomMessage"
+              name="collegeName"
               label="Enter your college name"
               type="text"
               validate={{
@@ -213,7 +208,7 @@ const RegisterComponent = ({ res }) => {
                 className="mr-4 mb-2"
                 color="primary"
                 disabled={disabled}
-                onClick={() => displayRazorpay()}
+                // onClick={() => displayRazorpay()}
               >
                 Pay Now
               </Button>
