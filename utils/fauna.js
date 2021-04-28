@@ -34,13 +34,13 @@ export const updateSeats = async (eventList, data) => {
   eventList.map((singleEvent) => {
     switch (singleEvent) {
       case "webeye":
-        data.webeye.seats++;
+        data.webeye.seats+=1;
         break;
       case "coding":
-        data.coding.seats++;
+        data.coding.seats+=1;
         break;
       case "quiz":
-        data.quiz.seats++;
+        data.quiz.seats+=1;
         break;
       default:
         break;
