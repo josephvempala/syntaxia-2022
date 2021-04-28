@@ -15,11 +15,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
-const fetcher = () => {
-  const res = axios
+const fetcher = async () => {
+  const res = await axios
     .get("/api/events")
     .then((response) => response.data)
-    .catch((error) => console.log(error));
+    .catch((err) => console.log(err));
   return res;
 };
 
@@ -46,7 +46,7 @@ const RegisterComponent = ({ res }) => {
   const [selected, setSelected] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const { data } = useSWR("/api/events", fetcher, {
-    initialData: res,
+    revalidateOnMount: true,
     refreshInterval: 1000,
   });
 
@@ -232,7 +232,7 @@ const RegisterComponent = ({ res }) => {
               events.map((singleEvent) => (
                 <ListGroupItem key={singleEvent.id}>
                   {singleEvent.name} :{" "}
-                  {singleEvent.seats === 0 ? "event closed" : singleEvent.seats}
+                  {singleEvent.seats >= 10 ? "event closed" : singleEvent.seats}
                 </ListGroupItem>
               ))
             ) : (

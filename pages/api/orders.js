@@ -23,10 +23,9 @@ export default async function handler(req, res) {
         res.status(404).json({ alert: "Record not FOUND" });
       }
       await updateSeats(eventList, existingRecord.data);
-
       return res.status(200).json({ status: "ok" });
     } catch (error) {
-      res.status(500).json({ msg: "Something went wrong." });
+      return res.status(500).json({ msg: "Something went wrong." });
     }
   } else {
     return res.status(403).json({ message: "403 Forbidden" });

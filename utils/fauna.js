@@ -33,28 +33,18 @@ export const updateSeats = async (eventList, data) => {
   eventList.map((singleEvent) => {
     switch (singleEvent) {
       case "webeye":
-        if (data.webeye.seats === 0) {
-          break;
-        }
-        data.webeye.seats -= 1;
+        data.webeye.seats += 1;
         break;
       case "coding":
-        if (data.coding.seats === 0) {
-          break;
-        }
-        data.coding.seats -= 1;
+        data.coding.seats += 1;
         break;
       case "quiz":
-        if (data.quiz.seats === 0) {
-          break;
-        }
-        data.quiz.seats -= 1;
+        data.quiz.seats += 1;
         break;
       default:
         break;
     }
   });
-  console.log(data);
   return await faunaClient.query(
     q.Update(q.Ref(q.Collection("seats"), "296089134289650185"), {
       data: data,
