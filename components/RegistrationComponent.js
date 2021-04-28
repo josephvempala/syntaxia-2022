@@ -232,7 +232,7 @@ const RegisterComponent = ({ res }) => {
               events.map((singleEvent) => (
                 <ListGroupItem key={singleEvent.id}>
                   {singleEvent.name} :{" "}
-                  {singleEvent.seats >= 20 ? "event closed" : singleEvent.seats}
+                  {singleEvent.seats === 0 ? "event closed" : singleEvent.seats}
                 </ListGroupItem>
               ))
             ) : (
