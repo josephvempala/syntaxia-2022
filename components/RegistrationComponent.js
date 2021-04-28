@@ -43,6 +43,7 @@ const loadRazorpay = (src) => {
 };
 
 const RegisterComponent = ({ res }) => {
+  const sample = [];
   const [selected, setSelected] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const { data } = useSWR("/api/events", fetcher, {
@@ -52,11 +53,17 @@ const RegisterComponent = ({ res }) => {
 
   const events = data ? Object.values(data[0].data) : [];
 
-  const options = [
-    { label: "web eye", value: "webeye" },
-    { label: "Coding", value: "coding" },
-    { label: "Quiz", value: "quiz" },
-  ];
+  const setOptions = () => {
+    const options = events.filter((singleEvent) => singleEvent.seats > 0);
+
+    return options.length > 0 ? options : events;
+  };
+
+  // const options = [
+  //   { label: "web eye", value: "webeye" },
+  //   { label: "Coding", value: "coding" },
+  //   { label: "Quiz", value: "quiz" },
+  // ];
 
   const displayRazorpay = async (event, values) => {
     if (disabled) {
@@ -197,7 +204,7 @@ const RegisterComponent = ({ res }) => {
             <pre>{JSON.stringify(selected.label)}</pre>
 
             <MultiSelect
-              options={options}
+              options={setOptions}
               value={selected}
               onChange={setSelected}
               labelledBy="Select"
@@ -231,7 +238,7 @@ const RegisterComponent = ({ res }) => {
               events &&
               events.map((singleEvent) => (
                 <ListGroupItem key={singleEvent.id}>
-                  {singleEvent.name} :{" "}
+                  {singleEvent.label} :{" "}
                   {singleEvent.seats === 0 ? "event closed" : singleEvent.seats}
                 </ListGroupItem>
               ))
