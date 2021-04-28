@@ -30,16 +30,17 @@ export const getEventsById = async (id) => {
 };
 
 export const updateSeats = async (eventList, data) => {
+  console.log(data);
   eventList.map((singleEvent) => {
     switch (singleEvent) {
       case "webeye":
-        data.webeye.seats += 1;
+        data.webeye.seats++;
         break;
       case "coding":
-        data.coding.seats += 1;
+        data.coding.seats++;
         break;
       case "quiz":
-        data.quiz.seats += 1;
+        data.quiz.seats++;
         break;
       default:
         break;

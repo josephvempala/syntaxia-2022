@@ -46,7 +46,7 @@ const RegisterComponent = ({ res }) => {
   const [selected, setSelected] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const { data } = useSWR("/api/events", fetcher, {
-    revalidateOnMount: true,
+    initialData: res,
     refreshInterval: 1000,
   });
 
@@ -232,7 +232,7 @@ const RegisterComponent = ({ res }) => {
               events.map((singleEvent) => (
                 <ListGroupItem key={singleEvent.id}>
                   {singleEvent.name} :{" "}
-                  {singleEvent.seats >= 10 ? "event closed" : singleEvent.seats}
+                  {singleEvent.seats >= 20 ? "event closed" : singleEvent.seats}
                 </ListGroupItem>
               ))
             ) : (
