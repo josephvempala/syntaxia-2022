@@ -43,7 +43,6 @@ const loadRazorpay = (src) => {
 };
 
 const RegisterComponent = ({ res }) => {
-  const sample = [];
   const [selected, setSelected] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const { data } = useSWR("/api/events", fetcher, {
