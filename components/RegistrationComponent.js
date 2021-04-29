@@ -15,6 +15,7 @@ import MySpinner from "../components/MySpinner";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AvForm, AvField } from "availity-reactstrap-validation";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const fetcher = async () => {
   const res = await axios
@@ -144,6 +145,9 @@ const RegisterComponent = ({ res }) => {
     paymentObject.open();
     setDisabled(false);
   };
+  function onChange(value) {
+    console.log("Captcha value:", value);
+  }
   const handleInvalidSubmit = () => {
     return toast.error("All fields are required", {
       position: "top-right",
@@ -221,7 +225,6 @@ const RegisterComponent = ({ res }) => {
               }}
             />
             <pre>{JSON.stringify(selected.label)}</pre>
-
             <MultiSelect
               options={setOptions}
               value={selected}
@@ -229,6 +232,11 @@ const RegisterComponent = ({ res }) => {
               labelledBy="Select"
               className="mb-4"
             />
+            <ReCAPTCHA
+              sitekey="6Len0b4aAAAAAFpkmlrx1GQAMOT8hVcxErGe1c1m"
+              onChange={onChange}
+            />
+            , document.body
             {selected.length > 0 && (
               <Button
                 className="mr-4 mb-2"
