@@ -1,4 +1,16 @@
 import faunadb from "faunadb";
+import {
+  CALL_OF_DUTY_MOBILE,
+  CAPTURE_THE_FLAG,
+  CODE_WAR,
+  VALORANT,
+  CYPHER,
+  WEB_EYE,
+  IT_HOOT,
+  SPEAKING_ART,
+  TECH_TALK,
+} from "../actions/action.types";
+
 const faunaClient = new faunadb.Client({
   secret: process.env.FAUNA_SECRET,
 });
@@ -30,16 +42,24 @@ export const getEventsById = async (id) => {
 };
 
 export const updateSeats = async (eventList, data) => {
-  console.log("data", data);
   eventList.map((singleEvent) => {
     switch (singleEvent.label) {
       case "webeye":
+        if (data.webeye.events === 0) {
+          break;
+        }
         data.webeye.seats -= 1;
         break;
       case "coding":
+        if (data.coding.events === 0) {
+          break;
+        }
         data.coding.seats -= 1;
         break;
       case "quiz":
+        if (data.quiz.events === 0) {
+          break;
+        }
         data.quiz.seats -= 1;
         break;
       default:

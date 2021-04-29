@@ -7,6 +7,7 @@ import {
   Container,
   Row,
   Col,
+  List,
 } from "reactstrap";
 import axios from "axios";
 import useSWR from "swr";
@@ -22,11 +23,6 @@ const fetcher = async () => {
     .catch((err) => console.log(err));
   return res;
 };
-
-export async function getStaticProps() {
-  const res = await fetcher("/api/events");
-  return { props: { res } };
-}
 
 const loadRazorpay = (src) => {
   return new Promise((resolve) => {
@@ -55,7 +51,7 @@ const RegisterComponent = ({ res }) => {
   const setOptions = () => {
     const options = events.filter((singleEvent) => singleEvent.seats > 0);
 
-    return options.length > 0 ? options : events;
+    return options.length > 0 ? options : [];
   };
 
   // const options = [
@@ -163,13 +159,37 @@ const RegisterComponent = ({ res }) => {
   return (
     <Container>
       <ToastContainer />
+      <ListGroup className=" mt-2 w-20 h-20">
+        <ListGroupItem color="info">
+          <h4>Note :</h4>
+          <ul>
+            <li>
+              Registrations for all the events are only processed through the
+              website.
+            </li>
+            <li>
+              Everyone willing to participate in SYNTAXIA must register
+              individually (even for group events, all the team members are
+              supposed to register individually).
+            </li>
+            <li>
+              Participants can pay once and participate in any number of events.
+            </li>
+            <li>
+              {" "}
+              Please avoid paying more than once. Refund of registration fee
+              will not be entertained.
+            </li>
+          </ul>
+        </ListGroupItem>
+      </ListGroup>
       <Row className=" w-60 h-30 mx-auto mt-4">
         <Col sm={{ size: 6, order: 2, offset: 1 }}>
           <AvForm
             onValidSubmit={displayRazorpay}
             onInvalidSubmit={handleInvalidSubmit}
           >
-            <h2 className="text-center">Select Events</h2>
+            <h3 className="text-center">Select Events</h3>
             <AvField
               name="name"
               label="Enter your Name"
@@ -230,7 +250,7 @@ const RegisterComponent = ({ res }) => {
         </Col>
 
         <Col className="mb-4">
-          <h2 className="text-center">Events List</h2>
+          <h3 className="text-center">Events List</h3>
 
           <ListGroup>
             {events.length > 0 ? (
@@ -250,5 +270,10 @@ const RegisterComponent = ({ res }) => {
     </Container>
   );
 };
+
+export async function getStaticProps() {
+  const res = await fetcher("/api/events");
+  return { props: { res } };
+}
 
 export default RegisterComponent;
