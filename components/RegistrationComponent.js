@@ -261,6 +261,11 @@ const RegistrationComponent = ({ res }) => {
             <ReCAPTCHA
               ref={recaptchaRef}
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              onErrored={() =>
+                alert(
+                  "Cannot contact reCAPTCHA. Check your connection and try again."
+                )
+              }
             />
             {selected.length > 0 && (
               <Button
