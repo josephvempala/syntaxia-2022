@@ -43,6 +43,7 @@ const RegisterComponent = ({ res }) => {
   const [selected, setSelected] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const recaptchaRef = React.createRef();
+
   const { data } = useSWR("/api/events", fetcher, {
     initialData: res,
     refreshInterval: 1000,
@@ -56,19 +57,33 @@ const RegisterComponent = ({ res }) => {
     return options.length > 0 ? options : [];
   };
 
-  // const options = [
-  //   { label: "web eye", value: "webeye" },
-  //   { label: "Coding", value: "coding" },
-  //   { label: "Quiz", value: "quiz" },
-  // ];
-
   const displayRazorpay = async (event, values) => {
     if (disabled) {
       return;
     }
-    const recaptchaValue = recaptchaRef.current.getValue();
-    if (recaptchaValue) {
-      console.log(recaptchaValue);
+    const recaptchaValue = await recaptchaRef.current.getValue();
+    if (!recaptchaValue) {
+      return toast.error("ReCAPTCHA required", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+    recaptchaRef.current.reset();
+    const verify = await axios
+      .post("/api/auth", {
+        recaptchaValue,
+      })
+      .then((response) => response.data)
+      .catch((err) => console.log(err));
+    console.log(verify);
+    if (verify.success) {
+      //verify recaptcha
+
       const result = await loadRazorpay(
         "https://checkout.razorpay.com/v1/checkout.js"
       );
@@ -247,7 +262,7 @@ const RegisterComponent = ({ res }) => {
             />
             <ReCAPTCHA
               ref={recaptchaRef}
-              sitekey={`${process.env.RECAPTCHA_SITE_KEY}`}
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
             />
             {selected.length > 0 && (
               <Button

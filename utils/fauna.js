@@ -43,24 +43,62 @@ export const getEventsById = async (id) => {
 
 export const updateSeats = async (eventList, data) => {
   eventList.map((singleEvent) => {
-    switch (singleEvent.label) {
-      case "webeye":
-        if (data.webeye.events === 0) {
+    console.log(singleEvent);
+
+    switch (singleEvent) {
+      case CALL_OF_DUTY_MOBILE:
+        if (data.CALL_OF_DUTY_MOBILE.events === 0) {
           break;
         }
-        data.webeye.seats -= 1;
+        data.CALL_OF_DUTY_MOBILE.seats -= 1;
         break;
-      case "coding":
-        if (data.coding.events === 0) {
+      case CAPTURE_THE_FLAG:
+        if (data.CAPTURE_THE_FLAG.events === 0) {
           break;
         }
-        data.coding.seats -= 1;
+        data.CAPTURE_THE_FLAG.seats -= 1;
         break;
-      case "quiz":
-        if (data.quiz.events === 0) {
+      case CODE_WAR:
+        if (data.CODE_WAR.events === 0) {
           break;
         }
-        data.quiz.seats -= 1;
+        data.CODE_WAR.seats -= 1;
+        break;
+      case VALORANT:
+        if (data.VALORANT.events === 0) {
+          break;
+        }
+        data.VALORANT.seats -= 1;
+        break;
+      case CYPHER:
+        if (data.CYPHER.events === 0) {
+          break;
+        }
+        data.CYPHER.seats -= 1;
+        break;
+      case WEB_EYE:
+        if (data.WEB_EYE.events === 0) {
+          break;
+        }
+        data.WEB_EYE.seats -= 1;
+        break;
+      case IT_HOOT:
+        if (data.IT_HOOT.events === 0) {
+          break;
+        }
+        data.IT_HOOT.seats -= 1;
+        break;
+      case SPEAKING_ART:
+        if (data.SPEAKING_ART.events === 0) {
+          break;
+        }
+        data.SPEAKING_ART.seats -= 1;
+        break;
+      case TECH_TALK:
+        if (data.TECH_TALK.events === 0) {
+          break;
+        }
+        data.TECH_TALK.seats -= 1;
         break;
       default:
         break;

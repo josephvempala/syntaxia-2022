@@ -10,7 +10,6 @@ export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "wrong request" });
   }
-
   const payment_capture = 1;
   const options = {
     amount: 40 * 100,

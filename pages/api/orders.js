@@ -22,7 +22,6 @@ export default async function handler(req, res) {
       if (!existingRecord) {
         res.status(404).json({ alert: "Record not FOUND" });
       }
-      console.log("eventList", eventList);
       await updateSeats(eventList, existingRecord.data);
       return res.status(200).json({ status: "ok" });
     } catch (error) {
