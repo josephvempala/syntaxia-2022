@@ -1,8 +1,22 @@
 import React from "react";
+import {useMediaQuery} from 'react-responsive';
+import {useRef, useEffect} from 'react';
 
 export default function About() {
+  const scrollRef = useRef(null);
+  const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
+  useEffect(()=>{
+    if(isMobile)
+    {
+      scrollRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest',
+      });
+    }
+  },[]);
   return (
-    <div>
+    <div ref={scrollRef}>
       <div className="container">
         <div className="row">
           <ol className="col-12 mt-3 breadcrumb">

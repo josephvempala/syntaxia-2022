@@ -23,35 +23,34 @@ const HeaderComponent = () => {
           }}
         />
         <NavbarBrand className="ml-auto" href="/">
-          <span>Cybernetics Association</span>
+          <img height="40" width="40" src={"./assets/images/sjc-logo.png"}></img>
+          <span className="ml-3">St Joseph's College (Autonomous)</span>
         </NavbarBrand>
         <Collapse isOpen={isNavOpen} navbar>
           <Nav navbar className="ml-auto">
             <NavItem>
               <Link href="/">
-              <a className="nav-link"><span className="fa fa-home fa-lg">Home</span></a>
+              <a className="nav-link"><span className="fa fa-home fa-lg"> Home</span></a>
               </Link>
             </NavItem>
             <NavItem>
               <Link href="/about">
-                <a className="nav-link"><span className="fa fa-info fa-lg">About</span></a>
+                <a className="nav-link"><span className="fa fa-book fa-lg"> About</span></a>
               </Link>
             </NavItem>
             <NavItem>
               <Link  href="/contact">
-                <a className="nav-link"><span className="fa fa-address-card fa-lg">Contact</span></a>
+                <a className="nav-link"><span className="fa fa-address-card fa-lg"> Contact</span></a>
               </Link>
             </NavItem>
             <NavItem>
               <Download className="nav-link">
-                <span className="fa fa-newspaper-o fa-lg">Brochure</span>
+                <span className="fa fa-newspaper-o fa-lg"> Brochure</span>
               </Download>
             </NavItem>
             <NavItem>
               <Link href="/register">
-              <a className="nav-link"><span className="fa fa-address-card fa-lg">
-                  Events/Registration
-                </span></a>
+              <a className="nav-link"><span className="fa fa-address-card fa-lg">  Event Registration</span></a>
               </Link>
             </NavItem>
           </Nav>
@@ -61,13 +60,14 @@ const HeaderComponent = () => {
         <div className="row row-content row-no-gutters">
           <div className="col-sm-4 align-self-center">
             <img
-              className="center-img"
+              className="center-img cybernetics"
               src={"./assets/images/cybernetics-logo.png"}
               alt="Cybernetics Logo"
             />
           </div>
           <div className="col-sm-4 align-self-center">
-            <h2 className="center-text sequel">Cybernetics Association</h2>
+            <h3 className="center-text sequel">St.Joseph's College Autonomous</h3><br/>
+            <h3 className="center-text sequel">Cybernetics Association</h3>
             <br />
             <h5 className="center-text">
               <i>Presents</i>
