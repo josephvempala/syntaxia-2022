@@ -63,7 +63,7 @@ const RegistrationComponent = ({ res }) => {
     if (!recaptchaValue) {
       return toast.error("ReCAPTCHA required", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 4000,
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: true,
@@ -89,7 +89,7 @@ const RegistrationComponent = ({ res }) => {
       if (!result) {
         return toast.info("Could not load razorpay,are you online", {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 4000,
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: true,
@@ -165,7 +165,7 @@ const RegistrationComponent = ({ res }) => {
   const handleInvalidSubmit = () => {
     return toast.error("All fields are required", {
       position: "top-right",
-      autoClose: 5000,
+      autoClose: 4000,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,
