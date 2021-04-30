@@ -1,15 +1,7 @@
-import { useState, useRef, useEffect } from "react";
-import {useMediaQuery} from 'react-responsive';
+import React, { useState, useRef, useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 import MultiSelect from "react-multi-select-component";
-import {
-  Button,
-  ListGroupItem,
-  ListGroup,
-  Container,
-  Row,
-  Col,
-  List,
-} from "reactstrap";
+import { Button, ListGroupItem, ListGroup, Row, Col } from "reactstrap";
 import axios from "axios";
 import useSWR from "swr";
 import MySpinner from "../components/MySpinner";
@@ -26,6 +18,11 @@ const fetcher = async () => {
   return res;
 };
 
+export async function getStaticProps() {
+  const res = await fetcher("/api/events");
+  return { props: { res } };
+}
+
 const loadRazorpay = (src) => {
   return new Promise((resolve) => {
     const script = document.createElement("script");
@@ -40,7 +37,7 @@ const loadRazorpay = (src) => {
   });
 };
 
-const RegisterComponent = ({ res }) => {
+const RegistrationComponent = ({ res }) => {
   const [selected, setSelected] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const recaptchaRef = React.createRef();
@@ -75,16 +72,15 @@ const RegisterComponent = ({ res }) => {
       });
     }
     recaptchaRef.current.reset();
+
     const verify = await axios
       .post("/api/auth", {
         recaptchaValue,
       })
       .then((response) => response.data)
       .catch((err) => console.log(err));
-    console.log(verify);
-    if (verify.success) {
-      //verify recaptcha
 
+    if (verify.success) {
       const result = await loadRazorpay(
         "https://checkout.razorpay.com/v1/checkout.js"
       );
@@ -102,82 +98,70 @@ const RegisterComponent = ({ res }) => {
         });
       }
 
-    if (!result) {
-      return toast.info("Could not load razorpay,are you online", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
-    }
-
-    const data = await axios
-      .post(`/api/razorpay`)
-      .then((response) => response.data)
-      .catch(function (error) {
-        console.log(error);
-      });
-    const options = {
-      key: process.env.RAZORPAY_KEY,
-      amount: data.amount,
-      currency: data.currency,
-      name: "St Joseph's College",
-      description: "Test Transaction",
-      order_id: data.id,
-      image: "",
-      handler: function (response) {
-        return toast.success("Payment Successful", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
+      const data = await axios
+        .post(`/api/razorpay`)
+        .then((response) => response.data)
+        .catch(function (error) {
+          console.log(error);
         });
-      },
-      prefill: {
-        name: values.name,
-        email: "",
-        contact: "",
-      },
-      notes: {
-        eventNames: `${selected.map((select) => select.value)}`,
-        college: values.collegeName,
-      },
-      theme: {
-        color: "#3399cc",
-      },
-    };
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.on("payment.failed", function (response) {
-      return toast.error(
-        `Payment Failed,due to:${response.reason} for ${payment_id} `,
-        {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }
-      );
-      // alert(response.error.code);
-      // alert(response.error.description);
-      // alert(response.error.source);
-      // alert(response.error.step);
-      // alert(response.error.reason);
-      // alert(response.error.metadata.order_id);
-      // alert(response.error.metadata.payment_id);
-    });
-    paymentObject.open();
-    setDisabled(false);
+      const options = {
+        key: process.env.RAZORPAY_KEY,
+        amount: data.amount,
+        currency: data.currency,
+        name: "St Joseph's College",
+        description: "Test Transaction",
+        order_id: data.id,
+        image: "",
+        handler: function (response) {
+          return toast.success("Payment Successful", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        },
+        prefill: {
+          name: values.name,
+          email: "",
+          contact: "",
+        },
+        notes: {
+          eventNames: `${selected.map((select) => select.value)}`,
+          college: values.collegeName,
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.on("payment.failed", function (response) {
+        return toast.error(
+          `Payment Failed,due to:${response.reason} for ${payment_id} `,
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          }
+        );
+        // alert(response.error.code);
+        // alert(response.error.description);
+        // alert(response.error.source);
+        // alert(response.error.step);
+        // alert(response.error.reason);
+        // alert(response.error.metadata.order_id);
+        // alert(response.error.metadata.payment_id);
+      });
+      paymentObject.open();
+      setDisabled(false);
+    }
   };
-
   const handleInvalidSubmit = () => {
     return toast.error("All fields are required", {
       position: "top-right",
@@ -192,16 +176,15 @@ const RegisterComponent = ({ res }) => {
 
   const scrollRef = useRef(null);
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
-  useEffect(()=>{
-    if(isMobile)
-    {
+  useEffect(() => {
+    if (isMobile) {
       scrollRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-        inline: 'nearest',
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest",
       });
     }
-  },[]);
+  }, []);
 
   return (
     <div ref={scrollRef} className="container">
@@ -281,17 +264,16 @@ const RegisterComponent = ({ res }) => {
             />
             {selected.length > 0 && (
               <Button
-                className="mr-4 mb-2"
+                className="mr-4 mt-2 mb-2"
                 color="primary"
                 disabled={disabled}
-                // onClick={() => displayRazorpay()}
               >
                 Pay Now
               </Button>
             )}
             <Button
               color="danger"
-              className="ml-8 mb-2"
+              className="ml-8 mt-2 mb-2"
               onClick={() => setSelected([])}
             >
               cancel
@@ -321,9 +303,4 @@ const RegisterComponent = ({ res }) => {
   );
 };
 
-export async function getStaticProps() {
-  const res = await fetcher("/api/events");
-  return { props: { res } };
-}
-
-export default RegisterComponent;
+export default RegistrationComponent;
