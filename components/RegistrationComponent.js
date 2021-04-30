@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import MultiSelect from "react-multi-select-component";
 import {
   Button,
@@ -42,6 +42,7 @@ const loadRazorpay = (src) => {
 const RegisterComponent = ({ res }) => {
   const [selected, setSelected] = useState([]);
   const [disabled, setDisabled] = useState(false);
+  const recaptchaRef = React.createRef();
   const { data } = useSWR("/api/events", fetcher, {
     initialData: res,
     refreshInterval: 1000,
@@ -65,13 +66,90 @@ const RegisterComponent = ({ res }) => {
     if (disabled) {
       return;
     }
-    const result = await loadRazorpay(
-      "https://checkout.razorpay.com/v1/checkout.js"
-    );
-    setDisabled(true);
+    const recaptchaValue = recaptchaRef.current.getValue();
+    if (recaptchaValue) {
+      console.log(recaptchaValue);
+      const result = await loadRazorpay(
+        "https://checkout.razorpay.com/v1/checkout.js"
+      );
+      setDisabled(true);
 
-    if (!result) {
-      return toast.info("Could not load razorpay,are you online", {
+      if (!result) {
+        return toast.info("Could not load razorpay,are you online", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+
+      const data = await axios
+        .post(`/api/razorpay`)
+        .then((response) => response.data)
+        .catch(function (error) {
+          console.log(error);
+        });
+      const options = {
+        key: process.env.RAZORPAY_KEY,
+        amount: data.amount,
+        currency: data.currency,
+        name: "St Joseph's College",
+        description: "Test Transaction",
+        order_id: data.id,
+        image: "",
+        handler: function (response) {
+          return toast.success("Payment Successful", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        },
+        prefill: {
+          name: values.name,
+          email: "",
+          contact: "",
+        },
+        notes: {
+          eventNames: `${selected.map((select) => select.value)}`,
+          college: values.collegeName,
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.on("payment.failed", function (response) {
+        return toast.error(
+          `Payment Failed,due to:${response.reason} for ${payment_id} `,
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          }
+        );
+        // alert(response.error.code);
+        // alert(response.error.description);
+        // alert(response.error.source);
+        // alert(response.error.step);
+        // alert(response.error.reason);
+        // alert(response.error.metadata.order_id);
+        // alert(response.error.metadata.payment_id);
+      });
+      paymentObject.open();
+      setDisabled(false);
+    } else {
+      return toast.error("ReCAPTCHA required", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: true,
@@ -81,69 +159,6 @@ const RegisterComponent = ({ res }) => {
         progress: undefined,
       });
     }
-
-    const data = await axios
-      .post(`/api/razorpay`)
-      .then((response) => response.data)
-      .catch(function (error) {
-        console.log(error);
-      });
-    const options = {
-      key: process.env.RAZORPAY_KEY,
-      amount: data.amount,
-      currency: data.currency,
-      name: "St Joseph's College",
-      description: "Test Transaction",
-      order_id: data.id,
-      image: "",
-      handler: function (response) {
-        return toast.success("Payment Successful", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      },
-      prefill: {
-        name: values.name,
-        email: "",
-        contact: "",
-      },
-      notes: {
-        eventNames: `${selected.map((select) => select.value)}`,
-        college: values.collegeName,
-      },
-      theme: {
-        color: "#3399cc",
-      },
-    };
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.on("payment.failed", function (response) {
-      return toast.error(
-        `Payment Failed,due to:${response.reason} for ${payment_id} `,
-        {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }
-      );
-      // alert(response.error.code);
-      // alert(response.error.description);
-      // alert(response.error.source);
-      // alert(response.error.step);
-      // alert(response.error.reason);
-      // alert(response.error.metadata.order_id);
-      // alert(response.error.metadata.payment_id);
-    });
-    paymentObject.open();
-    setDisabled(false);
   };
 
   const handleInvalidSubmit = () => {
@@ -230,20 +245,22 @@ const RegisterComponent = ({ res }) => {
               labelledBy="Select"
               className="mb-4"
             />
-
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={`${process.env.RECAPTCHA_SITE_KEY}`}
+            />
             {selected.length > 0 && (
               <Button
-                className="mr-4 mb-2"
+                className="mr-4 mt-2 mb-2"
                 color="primary"
                 disabled={disabled}
-                // onClick={() => displayRazorpay()}
               >
                 Pay Now
               </Button>
             )}
             <Button
               color="danger"
-              className="ml-8 mb-2"
+              className="mt-2 mb-2"
               onClick={() => setSelected([])}
             >
               cancel
@@ -257,12 +274,17 @@ const RegisterComponent = ({ res }) => {
           <ListGroup>
             {events.length > 0 ? (
               events &&
-              events.map((singleEvent) => (
-                <ListGroupItem key={singleEvent.id}>
-                  {singleEvent.label} :{" "}
-                  {singleEvent.seats === 0 ? "event closed" : singleEvent.seats}
-                </ListGroupItem>
-              ))
+              events.map((singleEvent) =>
+                singleEvent.seats === 0 ? (
+                  <ListGroupItem color="danger" key={singleEvent.id}>
+                    {singleEvent.label} : event closed
+                  </ListGroupItem>
+                ) : (
+                  <ListGroupItem key={singleEvent.id}>
+                    {singleEvent.label} : {singleEvent.seats}
+                  </ListGroupItem>
+                )
+              )
             ) : (
               <MySpinner />
             )}
