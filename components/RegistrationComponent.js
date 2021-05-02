@@ -239,7 +239,7 @@ const RegistrationComponent = ({ res }) => {
                 errorMessage="Enter a valid name"
                 validate={{
                   required: { value: true },
-                  pattern: { value: "^[A-Za-z0-9]" },
+                  pattern: { value: "^[A-Za-z]" },
                   minLength: { value: 4 },
                 }}
               />
