@@ -26,6 +26,7 @@ export async function getStaticProps() {
 const RegistrationComponent = ({ res }) => {
   const [selected, setSelected] = useState([]);
   const [disabled, setDisabled] = useState(false);
+  const [form, setForm] = useState(null);
   const recaptchaRef = React.createRef();
   // const [options, getOptions] = useState([]);
 
@@ -39,6 +40,7 @@ const RegistrationComponent = ({ res }) => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
       script.src = src;
+      script.async = true;
       script.onload = () => {
         resolve(true);
       };
@@ -114,6 +116,7 @@ const RegistrationComponent = ({ res }) => {
         order_id: data.id,
         image: "",
         handler: function (response) {
+          form.reset();
           setSelected([]);
           return toast.success("Payment Successful", {
             position: "top-center",
@@ -176,7 +179,10 @@ const RegistrationComponent = ({ res }) => {
       progress: undefined,
     });
   };
-
+  const cancelSubmit = () => {
+    form && form.reset();
+    setSelected([]);
+  };
   const scrollRef = useRef(null);
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
   useEffect(() => {
@@ -221,6 +227,7 @@ const RegistrationComponent = ({ res }) => {
         <Row className=" w-60 h-30 mx-auto mt-4">
           <Col sm={{ size: 6, order: 2, offset: 1 }}>
             <AvForm
+              ref={(c) => setForm(c)}
               onValidSubmit={displayRazorpay}
               onInvalidSubmit={handleInvalidSubmit}
             >
@@ -264,7 +271,7 @@ const RegistrationComponent = ({ res }) => {
               <pre>{JSON.stringify(selected.label)}</pre>
 
               <MultiSelect
-                options={setOptions}
+                options={() => setOptions()}
                 value={selected}
                 onChange={setSelected}
                 labelledBy="Select events"
@@ -291,7 +298,7 @@ const RegistrationComponent = ({ res }) => {
               <Button
                 color="danger"
                 className="ml-8 mt-2 mb-4"
-                onClick={() => setSelected([])}
+                onClick={cancelSubmit}
               >
                 cancel
               </Button>
