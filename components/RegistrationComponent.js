@@ -1,7 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import MultiSelect from "react-multi-select-component";
-import { Button, ListGroupItem, ListGroup, Row, Col, Alert } from "reactstrap";
+import {
+  Button,
+  ListGroupItem,
+  Table,
+  ListGroup,
+  Row,
+  Col,
+  Alert,
+} from "reactstrap";
 import axios from "axios";
 import useSWR from "swr";
 import MySpinner from "../components/MySpinner";
@@ -120,7 +128,7 @@ const RegistrationComponent = ({ res }) => {
           setSelected([]);
           return toast.success("Payment Successful", {
             position: "top-center",
-            autoClose: 5000,
+            autoClose: 4000,
             hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: true,
@@ -308,21 +316,32 @@ const RegistrationComponent = ({ res }) => {
           <Col className="mb-4">
             <h3 className="text-center">Events List</h3>
 
-            <ListGroup>
-              {events.length > 0 ? (
-                events &&
-                events.map((singleEvent) => (
-                  <ListGroupItem key={singleEvent.id}>
-                    {singleEvent.label} :{" "}
-                    {singleEvent.seats === 0
-                      ? "event closed"
-                      : singleEvent.seats}
-                  </ListGroupItem>
-                ))
-              ) : (
-                <MySpinner />
-              )}
-            </ListGroup>
+            <Table>
+              <thead>
+                <tr>
+                  <th>Event Name</th>
+                  <th>Slots Left</th>
+                </tr>
+              </thead>
+              <tbody>
+                {events.length > 0 ? (
+                  events &&
+                  events.map((singleEvent) => (
+                    <tr key={singleEvent.id}>
+                      {/* <th scope="row"></th> */}
+                      <td>{singleEvent.label}</td>
+                      <td>
+                        {singleEvent.seats === 0
+                          ? "event closed"
+                          : singleEvent.seats}{" "}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <MySpinner />
+                )}
+              </tbody>
+            </Table>
           </Col>
         </Row>
       </div>
