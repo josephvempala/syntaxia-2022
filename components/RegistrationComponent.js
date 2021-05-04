@@ -44,20 +44,20 @@ const RegistrationComponent = ({ res }) => {
   });
   const events = data ? Object.values(data[0].data) : [];
 
-  const loadRazorpay = (src) => {
-    return new Promise((resolve) => {
-      const script = document.createElement("script");
-      script.src = src;
-      script.async = true;
-      script.onload = () => {
-        resolve(true);
-      };
-      script.onerror = () => {
-        resolve(false);
-      };
-      document.body.appendChild(script);
-    });
-  };
+  // const loadRazorpay = (src) => {
+  //   return new Promise((resolve) => {
+  //     const script = document.createElement("script");
+  //     script.src = src;
+  //     script.async = true;
+  //     script.onload = () => {
+  //       resolve(true);
+  //     };
+  //     script.onerror = () => {
+  //       resolve(false);
+  //     };
+  //     document.body.appendChild(script);
+  //   });
+  // };
 
   const setOptions = () => {
     const options = events.filter((singleEvent) => singleEvent.seats > 0);
@@ -93,21 +93,21 @@ const RegistrationComponent = ({ res }) => {
 
     if (verify.success) {
       setDisabled(true);
-      const result = await loadRazorpay(
-        "https://checkout.razorpay.com/v1/checkout.js"
-      );
+      // const result = await loadRazorpay(
+      //   "https://checkout.razorpay.com/v1/checkout.js"
+      // );
 
-      if (!result) {
-        return toast.info("Could not load razorpay,are you online", {
-          position: "top-right",
-          autoClose: 4000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      }
+      // if (!result) {
+      //   return toast.info("Could not load razorpay,are you online", {
+      //     position: "top-right",
+      //     autoClose: 4000,
+      //     hideProgressBar: true,
+      //     closeOnClick: true,
+      //     pauseOnHover: true,
+      //     draggable: true,
+      //     progress: undefined,
+      //   });
+      // }
 
       const data = await axios
         .post(`/api/razorpay`)
@@ -244,7 +244,7 @@ const RegistrationComponent = ({ res }) => {
                 name="name"
                 label="Enter your Name"
                 type="text"
-                errorMessage="Enter a valid name"
+                errorMessage="Please enter your name"
                 validate={{
                   required: { value: true },
                   pattern: { value: "^[A-Za-z]" },
@@ -328,7 +328,6 @@ const RegistrationComponent = ({ res }) => {
                   events &&
                   events.map((singleEvent) => (
                     <tr key={singleEvent.id}>
-                      {/* <th scope="row"></th> */}
                       <td>{singleEvent.label}</td>
                       <td>
                         {singleEvent.seats === 0
