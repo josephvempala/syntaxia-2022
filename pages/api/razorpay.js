@@ -23,37 +23,37 @@ const amountHandler = (eventList) => {
   eventList.map((singleEvent) => {
     switch (singleEvent) {
       case CALL_OF_DUTY_MOBILE: //2
-        amount = amount + 2 * 40;
+        amount = amount + 1 * 40;
         break;
       case CAPTURE_THE_FLAG: //3
-        amount = amount + 3 * 40;
+        amount = amount + 2 * 40;
         break;
       case CODE_WAR: //1
-        amount = amount + 1 * 40;
+        amount = amount + 0 * 40;
         break;
       case VALORANT: //5
-        amount = amount + 5 * 40;
+        amount = amount + 4 * 40;
         break;
       case CYPHER: //2
-        amount = amount + 2 * 40;
+        amount = amount + 1 * 40;
         break;
       case WEB_EYE: //2
-        amount = amount + 2 * 40;
+        amount = amount + 1 * 40;
         break;
       case IT_HOOT: //1
-        amount = amount + 1 * 40;
+        amount = amount + 0 * 40;
         break;
       case SPEAKING_ART: //1
-        amount = amount + 1 * 40;
+        amount = amount + 0 * 40;
         break;
       case TECH_TALK: //2
-        amount = amount + 2 * 40;
+        amount = amount + 1 * 40;
         break;
       default:
         break;
     }
   });
-  return amount;
+  return amount + 40;
 };
 
 export default async function handler(req, res) {
@@ -64,7 +64,7 @@ export default async function handler(req, res) {
   const totalAmount = amountHandler(eventNames);
   const payment_capture = 1;
   const options = {
-    amount: 1 * 100,
+    amount: totalAmount * 100,
     currency: "INR",
     receipt: `syn-${uuidv4()}`,
     payment_capture,
