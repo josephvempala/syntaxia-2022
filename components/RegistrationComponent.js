@@ -116,7 +116,7 @@ const RegistrationComponent = ({ res }) => {
           console.log(error);
         });
       const options = {
-        key: process.env.RAZORPAY_KEY,
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
         amount: data.amount,
         currency: data.currency,
         name: "St Joseph's College",
