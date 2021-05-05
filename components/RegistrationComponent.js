@@ -36,28 +36,12 @@ const RegistrationComponent = ({ res }) => {
   const [disabled, setDisabled] = useState(false);
   const [form, setForm] = useState(null);
   const recaptchaRef = React.createRef();
-  // const [options, getOptions] = useState([]);
 
   const { data } = useSWR("/api/events", fetcher, {
     initialData: res,
     refreshInterval: 1000,
   });
   const events = data ? Object.values(data[0].data) : [];
-
-  // const loadRazorpay = (src) => {
-  //   return new Promise((resolve) => {
-  //     const script = document.createElement("script");
-  //     script.src = src;
-  //     script.async = true;
-  //     script.onload = () => {
-  //       resolve(true);
-  //     };
-  //     script.onerror = () => {
-  //       resolve(false);
-  //     };
-  //     document.body.appendChild(script);
-  //   });
-  // };
 
   const setOptions = () => {
     const options = events.filter((singleEvent) => singleEvent.seats > 0);
@@ -68,7 +52,6 @@ const RegistrationComponent = ({ res }) => {
     if (disabled) {
       return;
     }
-
     const recaptchaValue = recaptchaRef.current.getValue();
     recaptchaRef.current.reset();
 
@@ -90,25 +73,10 @@ const RegistrationComponent = ({ res }) => {
       })
       .then((response) => response.data)
       .catch((err) => console.log(err));
-
     if (verify.success) {
       setDisabled(true);
-      // const result = await loadRazorpay(
-      //   "https://checkout.razorpay.com/v1/checkout.js"
-      // );
 
-      // if (!result) {
-      //   return toast.info("Could not load razorpay,are you online", {
-      //     position: "top-right",
-      //     autoClose: 4000,
-      //     hideProgressBar: true,
-      //     closeOnClick: true,
-      //     pauseOnHover: true,
-      //     draggable: true,
-      //     progress: undefined,
-      //   });
-      // }
-
+      //generate a order
       const data = await axios
         .post(`/api/razorpay`, {
           name: values.name,
@@ -119,6 +87,8 @@ const RegistrationComponent = ({ res }) => {
         .catch(function (error) {
           console.log(error);
         });
+
+      //razorpay options
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
         amount: data.amount,
@@ -191,6 +161,11 @@ const RegistrationComponent = ({ res }) => {
   const scrollRef = useRef(null);
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
   useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+
+    document.body.appendChild(script);
     if (isMobile) {
       scrollRef.current.scrollIntoView({
         behavior: "smooth",
