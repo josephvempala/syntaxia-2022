@@ -110,7 +110,11 @@ const RegistrationComponent = ({ res }) => {
       // }
 
       const data = await axios
-        .post(`/api/razorpay`)
+        .post(`/api/razorpay`, {
+          name: values.name,
+          college: values.collegeName,
+          eventNames: selected.map((select) => select.value),
+        })
         .then((response) => response.data)
         .catch(function (error) {
           console.log(error);
