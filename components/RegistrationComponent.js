@@ -48,6 +48,24 @@ const RegistrationComponent = ({ res }) => {
     return options.length > 0 ? options : [];
   };
 
+  const showGroupField = () => {
+    let result = false;
+    selected.map((select) => {
+      if (
+        select.value === "CALL_OF_DUTY_MOBILE" ||
+        select.value === "CAPTURE_THE_FLAG" ||
+        select.value === "VALORANT" ||
+        select.value === "CYPHER" ||
+        select.value === "WEB_EYE" ||
+        select.value === "TECH_TALK"
+      ) {
+        result = true;
+        return;
+      }
+    });
+    return result;
+  };
+
   const displayRazorpay = async (event, values) => {
     if (disabled) {
       return;
@@ -119,6 +137,7 @@ const RegistrationComponent = ({ res }) => {
           eventNames: `${selected.map((select) => select.value)}`,
           college: values.collegeName,
           studentName: values.name,
+          groupName: values.groupName,
         },
         theme: {
           color: "#3399cc",
@@ -257,6 +276,29 @@ const RegistrationComponent = ({ res }) => {
                 labelledBy="Select events"
                 className="mb-4"
               />
+              {showGroupField() && (
+                <AvField
+                  name="groupName"
+                  label="Enter your group name"
+                  type="text"
+                  validate={{
+                    required: {
+                      value: true,
+                      errorMessage: "Please enter your group name",
+                    },
+                    pattern: {
+                      value: "^[A-Za-z]",
+                      errorMessage:
+                        "College name must be composed only with letter",
+                    },
+                    minLength: {
+                      value: 4,
+                      errorMessage:
+                        "College name must have 4 or more characters",
+                    },
+                  }}
+                />
+              )}
               <ReCAPTCHA
                 ref={recaptchaRef}
                 sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
