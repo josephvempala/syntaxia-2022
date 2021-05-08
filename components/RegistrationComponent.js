@@ -289,12 +289,11 @@ const RegistrationComponent = ({ res }) => {
                     pattern: {
                       value: "^[A-Za-z]",
                       errorMessage:
-                        "College name must be composed only with letter",
+                        "group name must be composed only with letter",
                     },
                     minLength: {
                       value: 4,
-                      errorMessage:
-                        "College name must have 4 or more characters",
+                      errorMessage: "group name must have 4 or more characters",
                     },
                   }}
                 />
