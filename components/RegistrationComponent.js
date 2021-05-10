@@ -108,7 +108,7 @@ const RegistrationComponent = ({ res }) => {
         amount: data.amount,
         currency: data.currency,
         name: "St Joseph's College",
-        description: "Test Transaction",
+        description: "Transactions for Syntaxia",
         order_id: data.id,
         image: "",
         handler: function (response) {
