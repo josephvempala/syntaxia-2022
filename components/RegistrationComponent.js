@@ -212,6 +212,9 @@ const RegistrationComponent = ({ res }) => {
                 events.
               </li>
               <li>
+                All team members must decide a unique group name before registering for the group events.
+              </li>
+              <li>
                 {" "}
                 Please avoid paying more than once. Refund of registration fee
                 will not be entertained.
