@@ -8,6 +8,8 @@ import {
   Collapse,
   NavItem,
   Jumbotron,
+  Row,
+  Col
 } from "reactstrap";
 
 import Link from "next/link";
@@ -84,6 +86,14 @@ const HeaderComponent = () => {
           </div>
         </div>
       </Jumbotron>
+      <Row className="justify-content-center">
+        <Col sm={10}>
+          <div class="alert alert-info mt-3" role="alert">
+          <h4 class="alert-heading">Note:</h4>
+            <p><b style={{fontSize:24}}>Registrations have been extended from 18th May 2021 to 6:00PM 20th May 2021</b></p>
+          </div>
+        </Col>
+      </Row>
     </React.Fragment>
   );
 };
