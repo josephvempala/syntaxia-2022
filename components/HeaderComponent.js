@@ -9,7 +9,7 @@ import {
   NavItem,
   Jumbotron,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 
 import Link from "next/link";
@@ -25,24 +25,34 @@ const HeaderComponent = () => {
           }}
         />
         <NavbarBrand className="ml-auto" href="/">
-          <img height="40" width="40" src={"./assets/images/sjc-logo.png"}></img>
+          <img
+            height="40"
+            width="40"
+            src={"./assets/images/sjc-logo.png"}
+          ></img>
           <span className="ml-3">St Joseph's College (Autonomous)</span>
         </NavbarBrand>
         <Collapse isOpen={isNavOpen} navbar>
           <Nav navbar className="ml-auto">
             <NavItem>
               <Link href="/">
-              <a className="nav-link"><span className="fa fa-home fa-lg"> Home</span></a>
+                <a className="nav-link">
+                  <span className="fa fa-home fa-lg"> Home</span>
+                </a>
               </Link>
             </NavItem>
             <NavItem>
               <Link href="/about">
-                <a className="nav-link"><span className="fa fa-book fa-lg"> About</span></a>
+                <a className="nav-link">
+                  <span className="fa fa-book fa-lg"> About</span>
+                </a>
               </Link>
             </NavItem>
             <NavItem>
-              <Link  href="/contact">
-                <a className="nav-link"><span className="fa fa-address-card fa-lg"> Contact</span></a>
+              <Link href="/contact">
+                <a className="nav-link">
+                  <span className="fa fa-address-card fa-lg"> Contact</span>
+                </a>
               </Link>
             </NavItem>
             <NavItem>
@@ -52,7 +62,12 @@ const HeaderComponent = () => {
             </NavItem>
             <NavItem>
               <Link href="/register">
-              <a className="nav-link"><span className="fa fa-address-card fa-lg">  Event Registration</span></a>
+                <a className="nav-link">
+                  <span className="fa fa-address-card fa-lg">
+                    {" "}
+                    Event Registration
+                  </span>
+                </a>
               </Link>
             </NavItem>
           </Nav>
@@ -68,7 +83,10 @@ const HeaderComponent = () => {
             />
           </div>
           <div className="col-sm-4 align-self-center">
-            <h3 className="center-text sequel">St.Joseph's College Autonomous</h3><br/>
+            <h3 className="center-text sequel">
+              St.Joseph's College Autonomous
+            </h3>
+            <br />
             <h3 className="center-text sequel">Cybernetics Association</h3>
             <br />
             <h5 className="center-text">
@@ -86,14 +104,6 @@ const HeaderComponent = () => {
           </div>
         </div>
       </Jumbotron>
-      <Row className="justify-content-center">
-        <Col sm={10}>
-          <div class="alert alert-info mt-3" role="alert">
-          <h4 class="alert-heading">Note:</h4>
-            <p><b style={{fontSize:24}}>Registrations have been extended from 18th May 2021 to 6:00PM 20th May 2021</b></p>
-          </div>
-        </Col>
-      </Row>
     </React.Fragment>
   );
 };
