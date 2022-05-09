@@ -1,6 +1,8 @@
-import { getEvents } from "../../utils/fauna";
+import { getEvents } from "../../utils/dbActions";
+import dbConnect from "../../utils/mongoConnect";
 
 export default async function handler(req, res) {
+  await dbConnect();
   if (req.method !== "GET") {
     return res.status(405);
   }

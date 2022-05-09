@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
-import MultiSelect from "react-multi-select-component";
+import { MultiSelect } from "react-multi-select-component";
 import {
   Button,
   ListGroupItem,
@@ -17,6 +17,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import ReCAPTCHA from "react-google-recaptcha";
+import ReactNoSsr from "react-no-ssr";
 
 const fetcher = async () => {
   const res = await axios
@@ -26,7 +27,7 @@ const fetcher = async () => {
   return res;
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const res = await fetcher("/api/events");
   return { props: { res } };
 }
@@ -39,18 +40,22 @@ const RegistrationComponent = ({ res }) => {
 
   const { data } = useSWR("/api/events", fetcher, {
     initialData: res,
-    refreshInterval: 1000,
+    refreshInterval: 5000,
   });
-  const events = data ? Object.values(data[0].data) : [];
+  const events = data ?? [];
 
-  const setOptions = () => {
-    const options = events.filter((singleEvent) => singleEvent.seats > 0);
+  const setOptions = (() => {
+    const options = events
+      .filter((singleEvent) => singleEvent.seats > 0)
+      .map((x) => ({ label: x.name, value: x.seq }));
     return options.length > 0 ? options : [];
-  };
+  })();
 
   const showGroupField = () => {
     let result = false;
-    selected.map((select) => {
+    console.log(selected);
+    selected.map((selectedSeq) => {
+      const select = events.filter((x) => (x.seq = selectedSeq))[0];
       if (
         select.value === "CALL_OF_DUTY_MOBILE" ||
         select.value === "CAPTURE_THE_FLAG" ||
@@ -130,7 +135,7 @@ const RegistrationComponent = ({ res }) => {
           contact: "",
         },
         notes: {
-          eventNames: `${selected.map((select) => select.value)}`,
+          eventNames: selected.map((x) => x.value).join(","),
           college: values.collegeName,
           studentName: values.name,
           groupName: values.groupName,
@@ -212,7 +217,8 @@ const RegistrationComponent = ({ res }) => {
                 events.
               </li>
               <li>
-                All team members must decide a unique group name before registering for the group events.
+                All team members must decide a unique group name before
+                registering for the group events.
               </li>
               <li>
                 {" "}
@@ -261,20 +267,20 @@ const RegistrationComponent = ({ res }) => {
                   },
                 }}
               />
-              {selected.length > 0 && (
+              {
                 <Alert color="secondary">
                   Number of events selected : <b>{selected.length}</b>
                 </Alert>
-              )}
-              <pre>{JSON.stringify(selected.label)}</pre>
-
-              <MultiSelect
-                options={() => setOptions()}
-                value={selected}
-                onChange={setSelected}
-                labelledBy="Select events"
-                className="mb-4"
-              />
+              }
+              <ReactNoSsr>
+                <MultiSelect
+                  options={setOptions}
+                  value={selected}
+                  onChange={setSelected}
+                  labelledBy="Select events"
+                  className="mb-4"
+                />
+              </ReactNoSsr>
               {showGroupField() && (
                 <AvField
                   name="groupName"
@@ -340,7 +346,7 @@ const RegistrationComponent = ({ res }) => {
                   events &&
                   events.map((singleEvent) => (
                     <tr key={singleEvent.id}>
-                      <td>{singleEvent.label}</td>
+                      <td>{singleEvent.name}</td>
                       <td>
                         {singleEvent.seats === 0
                           ? "event closed"
