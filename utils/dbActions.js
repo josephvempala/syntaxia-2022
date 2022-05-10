@@ -21,6 +21,9 @@ export const createRegistration = async (
   contact,
   order_id,
   razorpay_event_id,
+  college,
+  name,
+  groupName,
   seqIds
 ) => {
   const events = await Events.find({ seq: { $in: seqIds } });
@@ -30,10 +33,17 @@ export const createRegistration = async (
     order_id,
     events,
     razorpay_event_id,
+    college,
+    name,
+    groupName,
   });
   return result;
 };
 
 export const getRegistration = async (razorpay_event_id) => {
   return await Registrations.find({ razorpay_event_id });
+};
+
+export const getRegistrations = async () => {
+  return Registrations.find({}).sort({ _id: -1 });
 };

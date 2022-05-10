@@ -7,6 +7,9 @@ const registrationSchema = new mongoose.Schema(
     contact: String,
     order_id: String,
     razorpay_event_id: { type: String, index: true },
+    college: String,
+    name: String,
+    groupName: String,
     events: [eventSchema],
   },
   { timestamps: true }

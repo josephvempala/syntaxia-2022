@@ -51,26 +51,6 @@ const RegistrationComponent = ({ res }) => {
     return options.length > 0 ? options : [];
   })();
 
-  const showGroupField = () => {
-    let result = false;
-    console.log(selected);
-    selected.map((selectedSeq) => {
-      const select = events.filter((x) => (x.seq = selectedSeq))[0];
-      if (
-        select.value === "CALL_OF_DUTY_MOBILE" ||
-        select.value === "CAPTURE_THE_FLAG" ||
-        select.value === "VALORANT" ||
-        select.value === "CYPHER" ||
-        select.value === "WEB_EYE" ||
-        select.value === "TECH_TALK"
-      ) {
-        result = true;
-        return;
-      }
-    });
-    return result;
-  };
-
   const displayRazorpay = async (event, values) => {
     if (disabled) {
       return;
@@ -281,28 +261,26 @@ const RegistrationComponent = ({ res }) => {
                   className="mb-4"
                 />
               </ReactNoSsr>
-              {showGroupField() && (
-                <AvField
-                  name="groupName"
-                  label="Enter your group name"
-                  type="text"
-                  validate={{
-                    required: {
-                      value: true,
-                      errorMessage: "Please enter your group name",
-                    },
-                    pattern: {
-                      value: "^[A-Za-z]",
-                      errorMessage:
-                        "group name must be composed only with letter",
-                    },
-                    minLength: {
-                      value: 4,
-                      errorMessage: "group name must have 4 or more characters",
-                    },
-                  }}
-                />
-              )}
+              <AvField
+                name="groupName"
+                label="Enter your group name"
+                type="text"
+                validate={{
+                  required: {
+                    value: true,
+                    errorMessage: "Please enter your group name",
+                  },
+                  pattern: {
+                    value: "^[A-Za-z]",
+                    errorMessage:
+                      "group name must be composed only with letters",
+                  },
+                  minLength: {
+                    value: 4,
+                    errorMessage: "group name must have 4 or more characters",
+                  },
+                }}
+              />
               <ReCAPTCHA
                 ref={recaptchaRef}
                 sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
@@ -348,7 +326,7 @@ const RegistrationComponent = ({ res }) => {
                     <tr key={singleEvent.id}>
                       <td>{singleEvent.name}</td>
                       <td>
-                        {singleEvent.seats === 0
+                        {singleEvent.seats <= 0
                           ? "event closed"
                           : singleEvent.seats}{" "}
                       </td>
@@ -366,4 +344,21 @@ const RegistrationComponent = ({ res }) => {
   );
 };
 
-export default RegistrationComponent;
+const RegistrationsWillOpen = () => {
+  return (
+    <div className="container">
+      <ListGroup className="mt-2 w-20 h-20">
+        <ListGroupItem color="info">
+          <h4>Note :</h4>
+          <ul>
+            <li>
+              Registrations will open at 7:00 PM 11th May 2022 on this page.
+            </li>
+          </ul>
+        </ListGroupItem>
+      </ListGroup>
+    </div>
+  );
+};
+
+export default RegistrationsWillOpen;

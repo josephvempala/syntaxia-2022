@@ -1,22 +1,21 @@
 import React from "react";
-import {useMediaQuery} from 'react-responsive';
-import {useRef, useEffect} from 'react';
+import { useMediaQuery } from "react-responsive";
+import { useRef, useEffect } from "react";
 
 export default function Contact() {
   const scrollRef = useRef(null);
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
-  useEffect(()=>{
-    if(isMobile)
-    {
+  useEffect(() => {
+    if (isMobile) {
       scrollRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-        inline: 'nearest',
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest",
       });
     }
-  },[]);
+  }, []);
   return (
-    <div ref={scrollRef} style={{textAlign:"center"}} className="container">
+    <div ref={scrollRef} style={{ textAlign: "center" }} className="container">
       <div
         className="row row-content justify-content-center"
         style={{ marginBottom: 50, marginTop: 50 }}
@@ -33,7 +32,7 @@ export default function Contact() {
             <br />
             Karnataka 560027
             <br />
-            <i className="fa fa-phone fa-lg"></i>: +916300516201
+            <i className="fa fa-phone fa-lg"></i>: +919900950186
             <br />
             <i className="fa fa-envelope-o fa-lg"></i>:
             <a href="mailto:cybernetics.sjc@gmail.com">
@@ -46,7 +45,7 @@ export default function Contact() {
             <a
               role="button"
               className="btn btn-primary"
-              href="tel:+916300516201"
+              href="tel:+919900950186"
             >
               <i className="fa fa-phone"></i> Call
             </a>

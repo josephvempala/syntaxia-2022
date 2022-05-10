@@ -37,6 +37,9 @@ export default async function handler(req, res) {
         entity.contact,
         entity.order_id,
         req.headers["x-razorpay-event-id"],
+        entity.notes.college,
+        entity.notes.name,
+        entity.notes.groupName,
         eventList
       );
       return res.status(200).json({ status: "ok" });
