@@ -4,7 +4,7 @@ import Layout from "../components/Layout";
 
 const register = () => {
   return (
-    <Layout title="Syntaxia 2021 | Register">
+    <Layout title="Syntaxia 2022 | Register">
       <RegistrationComponent />
     </Layout>
   );

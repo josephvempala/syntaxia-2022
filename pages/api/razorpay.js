@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
   const payment_capture = 1;
   const options = {
-    amount: 40 * 100,
+    amount: 100 * 100,
     currency: "INR",
     receipt: `syn-${uuidv4()}`,
     payment_capture,

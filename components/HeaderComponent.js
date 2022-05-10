@@ -8,8 +8,6 @@ import {
   Collapse,
   NavItem,
   Jumbotron,
-  Row,
-  Col,
 } from "reactstrap";
 
 import Link from "next/link";
@@ -93,7 +91,7 @@ const HeaderComponent = () => {
               <i>Presents</i>
             </h5>
             <br />
-            <h1 className="center-text forma">SYNTAXIA 2021</h1>
+            <h1 className="center-text forma">SYNTAXIA 2022</h1>
           </div>
           <div className="col-sm-4 align-self-center">
             <img

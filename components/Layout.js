@@ -14,7 +14,7 @@ const Layout = ({ title, keywords, description, children }) => {
 };
 
 Layout.defaultProps = {
-  title: "Syntaxia 2021",
+  title: "Syntaxia 2022",
   description: "participate in various events",
   keywords: "college,cybernetics",
 };

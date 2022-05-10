@@ -3,7 +3,7 @@ import Layout from "../components/Layout";
 
 const contact = () => {
   return (
-    <Layout title="Syntaxia 2021 | Contact">
+    <Layout title="Syntaxia 2022 | Contact">
       <Contact />
     </Layout>
   );

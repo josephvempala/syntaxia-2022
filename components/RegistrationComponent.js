@@ -113,7 +113,7 @@ const RegistrationComponent = ({ res }) => {
         amount: data.amount,
         currency: data.currency,
         name: "St Joseph's College",
-        description: " 2021",
+        description: " 2022",
         order_id: data.id,
         image: "",
         handler: function (response) {
