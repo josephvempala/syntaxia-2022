@@ -1,12 +1,19 @@
 import nextConnect from "next-connect";
 import multer from "multer";
 import { createRegistration, updateEvents } from "../../utils/dbActions";
+import { MulterAzureStorage } from "multer-azure-blob-storage";
 const { v4: uuidv4 } = require("uuid");
 
 const upload = multer({
-  storage: multer.diskStorage({
-    destination: "./public/uploads",
-    filename: (req, file, cb) => cb(null, `${uuidv4()}${file.originalname}`),
+  storage: new MulterAzureStorage({
+    connectionString:
+      "DefaultEndpointsProtocol=https;AccountName=syntaxia;AccountKey=yXRtsWZFBrPJGGwN6Ox15zFeFSfz8+H+7EqMyGWxj+QVzfCoHqX3KSowZOSst8FUj7ODqUF1kj6lzUFIHlRTrA==;EndpointSuffix=core.windows.net",
+    accessKey:
+      "yXRtsWZFBrPJGGwN6Ox15zFeFSfz8+H+7EqMyGWxj+QVzfCoHqX3KSowZOSst8FUj7ODqUF1kj6lzUFIHlRTrA==",
+    accountName: "syntaxia",
+    containerName: "files",
+    containerAccessLevel: "blob",
+    blobName: (req, file) => uuidv4() + file.originalname,
   }),
   fileFilter: (req, file, cb) => {
     if (
@@ -48,7 +55,7 @@ apiRoute.post(async (req, res) => {
       body.email,
       body.contact,
       uuidv4(),
-      req.file.filename,
+      req.file.url,
       body.college,
       body.name,
       body.groupName,
