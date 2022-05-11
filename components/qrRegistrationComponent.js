@@ -98,7 +98,7 @@ const QRRegistrationComponent = ({ res }) => {
         headers: { "content-type": "multipart/form-data" },
       });
       if (result) {
-        toast.success("Payment Successful", {
+        toast.success("Registration Successful", {
           position: "top-center",
           autoClose: 20000,
           hideProgressBar: true,
@@ -350,7 +350,7 @@ const QRRegistrationComponent = ({ res }) => {
                   color="primary"
                   disabled={disabled}
                 >
-                  Pay Now
+                  Register Now
                 </Button>
               )}
               <Button
