@@ -377,4 +377,4 @@ const RegistrationsWillOpen = () => {
   );
 };
 
-export default RegistrationComponent;
+export default RegistrationsWillOpen;
