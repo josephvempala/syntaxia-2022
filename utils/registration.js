@@ -6,7 +6,7 @@ const registrationSchema = new mongoose.Schema(
     email: String,
     contact: String,
     order_id: String,
-    razorpay_event_id: { type: String, index: true },
+    image_path: { type: String },
     college: String,
     name: String,
     groupName: String,

@@ -75,6 +75,14 @@ const columns = [
       sort: false,
     },
   },
+  {
+    name: "image_path",
+    label: "Image Url",
+    options: {
+      filter: true,
+      sort: false,
+    },
+  },
 ];
 
 const formatData = (data) => {
@@ -83,7 +91,8 @@ const formatData = (data) => {
     const events = item.events.map((x) => x.name).join(", ");
     const createdAt = new Date(item.createdAt).toString().split(" GMT")[0];
     const updatedAt = new Date(item.updatedAt).toString().split(" GMT")[0];
-    return { ...item, events, createdAt, updatedAt };
+    const image_path = "https://www.syntaxia.co.in/uploads/" + item.image_path;
+    return { ...item, events, createdAt, updatedAt, image_path };
   });
 };
 
