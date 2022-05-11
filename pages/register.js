@@ -6,7 +6,7 @@ import QRRegistrationComponent from "../components/qrRegistrationComponent";
 const register = () => {
   return (
     <Layout title="Syntaxia 2022 | Register">
-      <RegistrationComponent />
+      <QRRegistrationComponent />
     </Layout>
   );
 };
