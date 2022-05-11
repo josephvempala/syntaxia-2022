@@ -48,7 +48,7 @@ apiRoute.post(async (req, res) => {
       body.email,
       body.contact,
       uuidv4(),
-      req.file.path,
+      req.file.filename,
       body.college,
       body.name,
       body.groupName,

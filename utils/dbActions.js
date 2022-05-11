@@ -20,7 +20,7 @@ export const createRegistration = async (
   email,
   contact,
   order_id,
-  razorpay_event_id,
+  image_path,
   college,
   name,
   groupName,
@@ -31,11 +31,11 @@ export const createRegistration = async (
     email,
     contact,
     order_id,
-    events,
-    razorpay_event_id,
+    image_path,
     college,
     name,
     groupName,
+    events,
   });
   return result;
 };

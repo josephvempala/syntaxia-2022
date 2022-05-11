@@ -89,6 +89,7 @@ const QRRegistrationComponent = ({ res }) => {
       contact: values.contact,
       studentName: values.name,
       groupName: values.groupName,
+      name: values.name,
     });
     console.log(restForm);
     imageFormData.append("formdata", restForm);
