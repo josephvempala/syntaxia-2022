@@ -18,6 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import ReCAPTCHA from "react-google-recaptcha";
 import ReactNoSsr from "react-no-ssr";
+import FormData from "form-data";
 
 const fetcher = async () => {
   const res = await axios
@@ -32,12 +33,14 @@ export async function getServerSideProps() {
   return { props: { res } };
 }
 
-const RegistrationComponent = ({ res }) => {
+const QRRegistrationComponent = ({ res }) => {
+  const scrollRef = useRef(null);
+  const fileRef = useRef(null);
   const [selected, setSelected] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const [form, setForm] = useState(null);
+  const imageFormData = new FormData();
   const recaptchaRef = React.createRef();
-
   const { data } = useSWR("/api/events", fetcher, {
     initialData: res,
     refreshInterval: 5000,
@@ -50,8 +53,8 @@ const RegistrationComponent = ({ res }) => {
       .map((x) => ({ label: x.name, value: x.seq }));
     return options.length > 0 ? options : [];
   })();
-
-  const displayRazorpay = async (event, values) => {
+  const handleValidSubmit = async (event, values) => {
+    console.log(values);
     if (disabled) {
       return;
     }
@@ -78,70 +81,26 @@ const RegistrationComponent = ({ res }) => {
       .catch((err) => console.log(err));
     if (verify.success) {
       setDisabled(true);
-
-      //generate a order
-      const data = await axios
-        .post(`/api/razorpay`)
-        .then((response) => response.data)
-        .catch(function (error) {
-          console.log(error);
-        });
-
-      //razorpay options
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
-        amount: data.amount,
-        currency: data.currency,
-        name: "St Joseph's College",
-        description: " 2022",
-        order_id: data.id,
-        image: "",
-        handler: function (response) {
-          form.reset();
-          setSelected([]);
-          return toast.success("Payment Successful", {
-            position: "top-center",
-            autoClose: 4000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        },
-        prefill: {
-          name: values.name,
-          email: "",
-          contact: "",
-        },
-        notes: {
-          eventNames: selected.map((x) => x.value).join(","),
-          college: values.collegeName,
-          studentName: values.name,
-          groupName: values.groupName,
-        },
-        theme: {
-          color: "#3399cc",
-        },
-      };
-      const paymentObject = new window.Razorpay(options);
-      paymentObject.on("payment.failed", function (response) {
-        return toast.error(
-          `Payment Failed,due to:${response.reason} for ${payment_id} `,
-          {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          }
-        );
-      });
-      paymentObject.open();
-      setDisabled(false);
     }
+    const restForm = JSON.stringify({
+      eventNames: selected.map((x) => x.value),
+      college: values.collegeName,
+      email: values.email,
+      contact: values.contact,
+      studentName: values.name,
+      groupName: values.groupName,
+    });
+    console.log(restForm);
+    imageFormData.append("formdata", restForm);
+    const result = await axios.post("/api/qr", imageFormData, {
+      headers: { "content-type": "multipart/form-data" },
+    });
+    console.log(result.status);
+    console.log(result);
+  };
+
+  const validateImage = async (event) => {
+    imageFormData.append(event.target.name, event.target.files[0]);
   };
 
   const handleInvalidSubmit = () => {
@@ -159,14 +118,8 @@ const RegistrationComponent = ({ res }) => {
     form && form.reset();
     setSelected([]);
   };
-  const scrollRef = useRef(null);
   const isMobile = useMediaQuery({ query: `(max-width: 760px)` });
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-
-    document.body.appendChild(script);
     if (isMobile) {
       scrollRef.current.scrollIntoView({
         behavior: "smooth",
@@ -175,7 +128,6 @@ const RegistrationComponent = ({ res }) => {
       });
     }
   }, []);
-
   return (
     <>
       <ToastContainer />
@@ -213,10 +165,9 @@ const RegistrationComponent = ({ res }) => {
           <Col sm={{ size: 6, order: 2, offset: 1 }}>
             <AvForm
               ref={(c) => {
-                console.log(c);
                 setForm(c);
               }}
-              onValidSubmit={displayRazorpay}
+              onValidSubmit={handleValidSubmit}
               onInvalidSubmit={handleInvalidSubmit}
             >
               <h3 className="text-center">Select Events</h3>
@@ -229,6 +180,27 @@ const RegistrationComponent = ({ res }) => {
                   required: { value: true },
                   pattern: { value: "^[A-Za-z]" },
                   minLength: { value: 4 },
+                }}
+              />
+              <AvField
+                name="email"
+                label="Enter your Email"
+                type="email"
+                errorMessage="Please enter your name"
+                validate={{
+                  required: { value: true },
+                  pattern: { value: "^[A-Za-z]" },
+                  minLength: { value: 4 },
+                }}
+              />
+              <AvField
+                name="contact"
+                label="Enter your contact number"
+                type="tel"
+                errorMessage="Please enter a valid 10 digit phone number"
+                validate={{
+                  required: { value: true },
+                  pattern: { value: "[0-9]{9,10}" },
                 }}
               />
               <AvField
@@ -286,8 +258,11 @@ const RegistrationComponent = ({ res }) => {
                 }}
               />
               <AvField
+                ref={fileRef}
                 type="file"
                 label="Upload UPI image in jpeg or png with UPI transaction ID amount and Both UPI IDs clearly visible"
+                accept="image/png, image/jpeg"
+                onChange={validateImage}
                 validate={{
                   required: {
                     value: true,
@@ -360,21 +335,4 @@ const RegistrationComponent = ({ res }) => {
   );
 };
 
-const RegistrationsWillOpen = () => {
-  return (
-    <div className="container">
-      <ListGroup className="mt-2 w-20 h-20">
-        <ListGroupItem color="info">
-          <h4>Note :</h4>
-          <ul>
-            <li>
-              Registrations will open at 7:00 PM 11th May 2022 on this page.
-            </li>
-          </ul>
-        </ListGroupItem>
-      </ListGroup>
-    </div>
-  );
-};
-
-export default RegistrationComponent;
+export default QRRegistrationComponent;
