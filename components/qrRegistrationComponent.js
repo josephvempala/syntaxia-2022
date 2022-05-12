@@ -267,11 +267,10 @@ const QRRegistrationComponent = ({ res }) => {
               <AvField
                 name="contact"
                 label="Enter your contact number"
-                type="tel"
+                type="number"
                 errorMessage="Please enter a valid 10 digit phone number"
                 validate={{
                   required: { value: true },
-                  pattern: { value: "[0-9]{9,10}" },
                 }}
               />
               <AvField
