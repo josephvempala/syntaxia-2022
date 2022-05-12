@@ -193,6 +193,14 @@ const QRRegistrationComponent = ({ res }) => {
               </li>
             </ul>
           </ListGroupItem>
+          <ListGroupItem className="mt-4" color="danger">
+            <li>
+              <b>
+                The Registration fee is 100 Rupees per person regardless of the
+                number of events that you register for.
+              </b>
+            </li>
+          </ListGroupItem>
         </ListGroup>
         <Row className=" w-60 h-30 mx-auto mt-4">
           <Col sm={{ size: 6 }} className="mb-4">
