@@ -28,7 +28,7 @@ const HeaderComponent = () => {
             width="40"
             src={"./assets/images/sjc-logo.png"}
           ></img>
-          <span className="ml-3">St Joseph's College (Autonomous)</span>
+          <span className="ml-3">St Joseph's College</span>
         </NavbarBrand>
         <Collapse isOpen={isNavOpen} navbar>
           <Nav navbar className="ml-auto">
