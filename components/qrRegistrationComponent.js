@@ -318,7 +318,8 @@ const QRRegistrationComponent = ({ res }) => {
               />
               <p>
                 Upload google pay UPI screenshot in jpeg or png with UPI
-                transaction ID, amount and UPI IDs clearly visible to this link
+                transaction ID, amount and UPI IDs clearly visible to this link.
+                <b>Ignore if SJC student</b>
               </p>
               <br />
               <a
