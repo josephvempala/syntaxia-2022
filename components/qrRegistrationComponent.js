@@ -189,6 +189,25 @@ const QRRegistrationComponent = ({ res }) => {
               </li>
             </ul>
           </ListGroupItem>
+          <ListGroupItem className="mt-3" color="danger">
+            <li>
+              <b>
+                The Registration fee is 100 Rupees per person regardless of the
+                number of events that you register for.
+              </b>
+            </li>
+          </ListGroupItem>
+          <ListGroupItem className="mt-3" color="warning">
+            <li>
+              <b>
+                St. Joseph's College (Autonomous) students need not pay
+                registration fees for any of the events. All those SJC students
+                who have registered and paid will be reimbursed. Students can
+                also claim attendance for theory classes, attendance will be
+                takem at the venue.
+              </b>
+            </li>
+          </ListGroupItem>
         </ListGroup>
         <Row className=" w-60 h-30 mx-auto mt-4">
           <Col sm={{ size: 6 }} className="mb-4">
@@ -255,11 +274,10 @@ const QRRegistrationComponent = ({ res }) => {
               <AvField
                 name="contact"
                 label="Enter your contact number"
-                type="tel"
+                type="number"
                 errorMessage="Please enter a valid 10 digit phone number"
                 validate={{
                   required: { value: true },
-                  pattern: { value: "[0-9]{9,10}" },
                 }}
               />
               <AvField
