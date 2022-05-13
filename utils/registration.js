@@ -6,7 +6,6 @@ const registrationSchema = new mongoose.Schema(
     email: String,
     contact: String,
     order_id: String,
-    image_path: { type: String },
     college: String,
     name: String,
     groupName: String,

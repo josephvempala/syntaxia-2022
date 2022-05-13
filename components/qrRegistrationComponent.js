@@ -39,7 +39,6 @@ const QRRegistrationComponent = ({ res }) => {
   const [selected, setSelected] = useState([]);
   const [disabled, setDisabled] = useState(false);
   const [form, setForm] = useState(null);
-  const imageFormData = new FormData();
   const recaptchaRef = React.createRef();
   const { data } = useSWR("/api/events", fetcher, {
     initialData: res,
@@ -82,7 +81,7 @@ const QRRegistrationComponent = ({ res }) => {
     if (verify.success) {
       setDisabled(true);
     }
-    const restForm = JSON.stringify({
+    const restForm = {
       eventNames: selected.map((x) => x.value),
       college: values.collegeName,
       email: values.email,
@@ -90,13 +89,10 @@ const QRRegistrationComponent = ({ res }) => {
       studentName: values.name,
       groupName: values.groupName,
       name: values.name,
-    });
+    };
     console.log(restForm);
-    imageFormData.append("formdata", restForm);
     try {
-      const result = await axios.post("/api/qr", imageFormData, {
-        headers: { "content-type": "multipart/form-data" },
-      });
+      const result = await axios.post("/api/qr", restForm);
       if (result) {
         toast.success("Registration Successful", {
           position: "top-center",
@@ -208,8 +204,14 @@ const QRRegistrationComponent = ({ res }) => {
                 registration fees for any of the events. All those SJC students
                 who have registered and paid will be reimbursed. Students can
                 also claim attendance for theory classes, attendance will be
-                takem at the venue.
+                taken at the venue.
               </b>
+            </li>
+          </ListGroupItem>
+          <ListGroupItem className="mt-3" color="danger">
+            <li>
+              The Registrations for BGMI and VALORANT are open until{" "}
+              <b>12:00 PM Saturday 14th May only.</b>
             </li>
           </ListGroupItem>
         </ListGroup>
@@ -338,21 +340,18 @@ const QRRegistrationComponent = ({ res }) => {
                   },
                 }}
               />
-              <AvField
-                ref={fileRef}
-                type="file"
-                label="Upload google pay UPI screenshot in jpeg or png with UPI transaction ID, amount and UPI IDs clearly visible"
-                accept="image/png, image/jpeg"
-                onChange={validateImage}
-                validate={{
-                  required: {
-                    value: true,
-                    errorMessage:
-                      "Please Upload a valid image with relevant upi info",
-                  },
-                }}
-                name="image"
-              ></AvField>
+              <p>
+                Upload google pay UPI screenshot in jpeg or png with UPI
+                transaction ID, amount and UPI IDs clearly visible to this link.
+                <b>Ignore if SJC student</b>
+              </p>
+              <br />
+              <a
+                href="https://docs.google.com/forms/d/1TQ2F-94BPXF_-wqVG2N5WilR9CnCmCiWcyXk8pmeJeQ/edit"
+                target="_blank"
+              >
+                https://docs.google.com/forms/d/1TQ2F-94BPXF_-wqVG2N5WilR9CnCmCiWcyXk8pmeJeQ/edit
+              </a>
               <ReCAPTCHA
                 ref={recaptchaRef}
                 sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
