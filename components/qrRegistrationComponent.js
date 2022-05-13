@@ -201,6 +201,16 @@ const QRRegistrationComponent = ({ res }) => {
               </b>
             </li>
           </ListGroupItem>
+          <ListGroupItem className="mt-3" color="warning">
+            <li>
+              <b>
+                St. Joseph's College (Autonomous) students need not pay
+                registration fees for any of the events. All those SJC students
+                who have registered and paid registration fees will be
+                reimbursed their registration fee.
+              </b>
+            </li>
+          </ListGroupItem>
         </ListGroup>
         <Row className=" w-60 h-30 mx-auto mt-4">
           <Col sm={{ size: 6 }} className="mb-4">
