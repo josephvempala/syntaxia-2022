@@ -204,8 +204,14 @@ const QRRegistrationComponent = ({ res }) => {
                 registration fees for any of the events. All those SJC students
                 who have registered and paid will be reimbursed. Students can
                 also claim attendance for theory classes, attendance will be
-                takem at the venue.
+                taken at the venue.
               </b>
+            </li>
+          </ListGroupItem>
+          <ListGroupItem className="mt-3" color="danger">
+            <li>
+              The Registrations for BGMI and VALORANT are open until{" "}
+              <b>12:00 PM Saturday 14th May only.</b>
             </li>
           </ListGroupItem>
         </ListGroup>
