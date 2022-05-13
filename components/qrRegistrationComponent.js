@@ -206,8 +206,9 @@ const QRRegistrationComponent = ({ res }) => {
               <b>
                 St. Joseph's College (Autonomous) students need not pay
                 registration fees for any of the events. All those SJC students
-                who have registered and paid registration fees will be
-                reimbursed.
+                who have registered and paid will be reimbursed. Students can
+                also claim attendance for theory classes, attendance will be
+                takem at the venue.
               </b>
             </li>
           </ListGroupItem>
