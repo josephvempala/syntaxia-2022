@@ -98,8 +98,8 @@ const formatData = (data) => {
 
 const options = {
   filterType: "checkbox",
-  download: false,
-  print: false,
+  download: true,
+  print: true,
   selectableRows: "none",
 };
 
