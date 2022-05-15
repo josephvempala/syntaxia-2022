@@ -210,8 +210,8 @@ const QRRegistrationComponent = ({ res }) => {
           </ListGroupItem>
           <ListGroupItem className="mt-3" color="danger">
             <li>
-              The Registrations for BGMI and VALORANT are open until{" "}
-              <b>12:00 PM Saturday 14th May only.</b>
+              <b>IMPORTANT:</b> All registrations will be closed at{" "}
+              <b>7:00 PM Today on May 15th</b>
             </li>
           </ListGroupItem>
         </ListGroup>
